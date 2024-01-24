@@ -8,8 +8,9 @@ export default function Component() {
   return (
       <section className="min-h-screen w-screen pb-12 px-10 md:px-24 flex flex-col lg:flex-row gap-12 items-center justify-center bg-gradient-to-br from-transparent via-primary from-75% via-85% to-95% to-transparent">
         <div className="mt-32 lg:mt-0 max-w-full md:max-w-2xl lg:max-w-3xl">
-          <Badge variant="secondary">NEW</Badge>
-          <span className="ml-2 text-sm">AI-powered profile suggestions 🎉</span>
+          <Badge variant="secondary" className="pl-0.5 flex gap-2 w-fit">
+            <Badge>NEW</Badge> AI-powered profile suggestions 🎉
+          </Badge>
           <h3 className="mt-4 text-lg sm:text-xl md:text-2xl xl:text-4xl tracking-tight leading-tight text-muted-foreground">
             Say <i>Salam</i> to the modern way for Muslims to share their profiles with marriage aunties.
           </h3>
