@@ -6,7 +6,7 @@ import { SignUpButton } from "@clerk/nextjs"
 
 export default function Component() {
   return (
-    <section className="min-h-screen w-screen p-10 md:px-24 flex flex-col items-center justify-center bg-gradient-to-br from-background via-primary from-80% via-90% to-background">
+    <section className="min-h-screen w-screen p-10 md:px-24 flex flex-col items-center justify-center bg-gradient-to-br from-background via-primary from-75% via-85% to-95% to-background">
         <div className="max-w-7xl">
           <Badge variant="secondary">NEW</Badge>
           <span className="ml-2 text-sm">AI-powered profile suggestions</span>
