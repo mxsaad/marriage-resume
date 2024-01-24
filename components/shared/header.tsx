@@ -2,15 +2,14 @@ import Link from "next/link"
 import { ModeToggle } from "../ui/mode-toggle"
 import { Button } from "../ui/button"
 import { SignUpButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs"
-import { HeartFilledIcon } from "@radix-ui/react-icons"
+import Image from "next/image"
 
 const Header = () => {
   return (
-    <header className="fixed w-screen bg-background rounded-b-lg border-b-2 flex items-center justify-between gap-2 p-4">
-      <Link href="/">
-        <Button variant="outline" className="flex gap-2 pl-3">
-          <HeartFilledIcon />MarriageResume
-        </Button>
+    <header className="absolute self-center w-full bg-background rounded-lg border-b-2 flex items-center justify-between gap-2 p-4">
+      <Link href="/" className="flex gap-2 items-center justify-center">
+          <Image src="/favicon.png" alt="Marriage Resume" width={24} height={24}/>
+          <p className="font-bold tracking-tight">MarriageResume</p>
       </Link>
       <div className="flex items-center justify-center gap-2">
         <ModeToggle />
