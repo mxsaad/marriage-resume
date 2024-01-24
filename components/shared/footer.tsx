@@ -1,5 +1,3 @@
-import { ArrowTopRightIcon } from "@radix-ui/react-icons"
-
 export default function Footer() {
   return (
     <footer className="text-sm p-4 border-t-2">
