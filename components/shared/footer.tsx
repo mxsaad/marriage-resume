@@ -1,16 +1,12 @@
-import Link from "next/link"
-import { GitHubLogoIcon } from "@radix-ui/react-icons"
-import { Button } from "../ui/button"
+import { ArrowTopRightIcon } from "@radix-ui/react-icons"
 
 export default function Footer() {
   return (
-    <footer className="py-2 px-4 flex items-center justify-between border-t-2">
-        <p className="text-sm">© 2024 Muhammad Saad</p>
-        <Button size="icon" variant="outline">
-            <Link href="https://github.com/mxsaad/marriage-resume">
-                <GitHubLogoIcon className="h-[1.2rem] w-[1.2rem]" />
-            </Link>
-        </Button>
+    <footer className="text-sm p-4 border-t-2">
+        <span className="flex items-center justify-center whitespace-pre">
+          Made with ❤️ by <a className="underline" href="https://github.com/mxsaad" target="blank" rel="noopener noreferrer">Saad</a>.
+          Contribute on <a className="underline flex items-center justify-center" href="https://github.com/mxsaad/marriage-resume" target="blank" rel="noopener noreferrer">GitHub</a>.
+        </span>
     </footer>
   )
 }
