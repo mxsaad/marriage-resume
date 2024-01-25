@@ -1,12 +1,15 @@
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { ArrowTopRightIcon } from "@radix-ui/react-icons"
+import { ArrowTopRightIcon, CounterClockwiseClockIcon, LightningBoltIcon, LockClosedIcon } from "@radix-ui/react-icons"
 import { SignUpButton } from "@clerk/nextjs"
+import FeatureCard from "@/components/shared/feature-card"
 
 export default function Component() {
   return (
-      <section className="min-h-screen w-screen pb-12 px-10 md:px-24 flex flex-col lg:flex-row gap-12 items-center justify-center bg-gradient-to-br from-transparent via-primary from-75% via-85% to-95% to-transparent">
+    <>
+      {/* Typography & CTA */}
+      <section className="min-h-screen w-screen px-10 md:px-24 flex flex-col lg:flex-row gap-12 items-center justify-center">
         <div className="mt-32 lg:mt-0 max-w-full md:max-w-2xl lg:max-w-3xl">
           <Badge variant="secondary" className="pl-0.5 flex gap-2 w-fit">
             <Badge>NEW</Badge> AI-powered profile suggestions 🎉
@@ -27,7 +30,7 @@ export default function Component() {
             </SignUpButton>
           </div>
         </div>
-
+        {/* Phone Mockup */}
         <div className="relative mx-auto border-black bg-black border-[14px] rounded-[2.5rem] h-[600px] w-[300px] shadow-md shadow-muted">
           <div className="w-[148px] h-[18px] bg-black top-0 rounded-b-[1rem] left-1/2 -translate-x-1/2 absolute"></div>
           <div className="h-[46px] w-[3px] bg-black absolute -start-[17px] top-[124px] rounded-s-lg"></div>
@@ -39,6 +42,35 @@ export default function Component() {
           </div>
         </div>
       </section>
+      {/* Features */}
+      <section className="w-screen px-10 bg-transparent py-12 md:py-24 lg:py-32 xl:py-48 flex flex-col items-center justify-center">
+        <div className="max-w-xs sm:max-w-sm md:max-w-max mb-8 flex flex-col items-center justify-center text-center gap-2 md:gap-4">
+          <h1 className="font-bold tracking-tighter text-4xl sm:text-5xl lg:text-6xl/none">
+            Discover Our Unique Features
+          </h1>
+          <p className="leading-7 text-muted-foreground">
+            Designed from the ground up to be the easiest way for you to share your profile.
+          </p>
+        </div>
+        <div className="flex flex-col md:flex-row gap-8">
+          <FeatureCard
+            icon={<CounterClockwiseClockIcon className="w-6 h-6 text-foreground"/>} 
+            title="Rapid Setup"
+            description="Create a beautiful profile in minutes, so you can focus on what matters most."
+          />
+          <FeatureCard 
+            icon={<LockClosedIcon className="w-6 h-6 text-foreground"/>} 
+            title="Private & Secure"
+            description="We take privacy and security very seriously. Your data is safe with us."
+          />
+          <FeatureCard
+            icon={<LightningBoltIcon className="w-6 h-6 text-foreground"/>} 
+            title="AI-Powered Suggestions"
+            description="Our profile suggestions help you create a profile that stands out."
+          />
+        </div>
+      </section>
+    </>
   )
 }
 

@@ -6,7 +6,7 @@ import Image from "next/image"
 
 const Header = () => {
   return (
-    <header className="fixed bg-background/95 z-10 self-center w-screen rounded-lg border-b-2 flex items-center justify-between gap-2 py-4">
+    <header className="fixed bg-background/95 z-10 self-center w-screen rounded-b-md border-b-2 flex items-center justify-between gap-2 py-4">
       <Link href="/" className="flex gap-2 items-center justify-center pl-4">
           <Image src="/favicon.png" alt="Marriage Resume" width={24} height={24}/>
           <p className="font-bold tracking-tight">MarriageResume</p>

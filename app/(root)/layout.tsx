@@ -10,7 +10,6 @@ export default function RootLayout({
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
       <div className="flex flex-col min-h-screen">
-        <div className="absolute -z-10 w-screen h-full pattern-dots pattern-gray-500 pattern-bg-background pattern-size-4 pattern-opacity-20" />
         <Header />
         {children}
         <Footer />
