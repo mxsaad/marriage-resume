@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Marriage Resume",
-  description: "Create a beautiful, personalized marriage resume to send to potential spouses. Powered by AI that helps you stand out. Get started now for free!",
+  description: "Say Salam to the modern way for Muslims to share their profiles with marriage aunties. Create your beautiful profile to stand out now!",
 };
 
 export default function RootLayout({

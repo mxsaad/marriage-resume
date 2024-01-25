@@ -2,7 +2,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 import Header from "@/components/shared/header"
 import Footer from "@/components/shared/footer"
 
-export default function RootLayout({
+export default function HomeLayout({
   children,
 }: {
   children: React.ReactNode
