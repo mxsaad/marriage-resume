@@ -8,9 +8,9 @@ import FeatureCard from "@/components/shared/feature-card"
 export default function Component() {
   return (
     <>
-      {/* Typography & CTA */}
       <section className="min-h-screen w-screen px-10 md:px-24 flex flex-col lg:flex-row gap-12 items-center justify-center">
-        <div className="mt-32 lg:mt-0 max-w-full md:max-w-2xl lg:max-w-3xl">
+        {/* Typography & CTA */}
+        <div className="mt-32 lg:mt-0 max-w-sm sm:max-w-md md:max-w-2xl lg:max-w-3xl">
           <Badge variant="secondary" className="pl-0.5 flex gap-2 w-fit">
             <Badge>NEW</Badge> AI-powered profile suggestions 🎉
           </Badge>
@@ -22,11 +22,11 @@ export default function Component() {
           </h1>
           <div className="mt-6 md:mt-10 flex flex-col md:flex-row items-center gap-2">
             <div className="flex items-center">
-              <p className="pr-1 pl-2 h-9 font-mono text-base sm:text-lg flex items-center bg-secondary rounded-l-md font-medium text-foreground">marriageresu.me/</p>
-              <Input className="bg-background text-base sm:text-lg h-9 border-l-0 rounded-l-none w-36 sm:w-48 md:w-56" placeholder="Saad"/>
+              <p className="pr-1 pl-2 h-9 font-mono text-base sm:text-lg flex items-center bg-secondary rounded-l-md font-medium text-foreground">marriageresu.me/@</p>
+              <Input className="bg-background font-mono text-base sm:text-lg h-9 border-l-0 rounded-l-none w-full md:w-56" placeholder="saad"/>
             </div>
             <SignUpButton>
-                <Button className="flex w-[19.5rem] sm:w-[23.5rem] md:w-36 lg:w-auto gap-2 items-center">Claim <ArrowTopRightIcon /></Button>
+              <Button className="flex w-full md:w-auto gap-2 items-center">Claim <ArrowTopRightIcon /></Button>
             </SignUpButton>
           </div>
         </div>
@@ -42,8 +42,9 @@ export default function Component() {
           </div>
         </div>
       </section>
+
       {/* Features */}
-      <section className="w-screen px-10 bg-transparent py-12 md:py-24 lg:py-32 xl:py-48 flex flex-col items-center justify-center">
+      <section className="w-screen px-10 bg-transparent py-12 lg:pb-32 xl:pb-48 flex flex-col items-center justify-center">
         <div className="max-w-xs sm:max-w-sm md:max-w-max mb-8 flex flex-col items-center justify-center text-center gap-2 md:gap-4">
           <h1 className="font-bold tracking-tighter text-4xl sm:text-5xl lg:text-6xl/none">
             Discover Our Unique Features
@@ -56,7 +57,7 @@ export default function Component() {
           <FeatureCard
             icon={<CounterClockwiseClockIcon className="w-6 h-6 text-foreground"/>} 
             title="Rapid Setup"
-            description="Create a beautiful profile in minutes, so you can focus on what matters most."
+            description="Create a beautiful profile in minutes, so you can focus on what matters."
           />
           <FeatureCard 
             icon={<LockClosedIcon className="w-6 h-6 text-foreground"/>} 
@@ -73,4 +74,3 @@ export default function Component() {
     </>
   )
 }
-

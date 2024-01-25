@@ -74,7 +74,10 @@ const config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate"), require('tailwindcss-bg-patterns'),], 
+  plugins: [
+    require("tailwindcss-animate"), 
+    require('tailwindcss-dotted-background'),
+  ],
 } satisfies Config
 
 export default config
