@@ -15,7 +15,11 @@ const Header = () => {
         <ModeToggle />
         <SignedIn>
           <Button variant="ghost" size="icon">
-            <UserButton afterSignOutUrl="/"/>
+            <UserButton 
+              afterSignOutUrl="/"
+              userProfileMode="navigation"
+              userProfileUrl="/account"
+            />
           </Button>
         </SignedIn>
         <SignedOut>
