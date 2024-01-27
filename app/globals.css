@@ -1,7 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
- 
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -48,11 +48,12 @@
     --ring: 346.8 77.2% 49.8%;
   }
 }
- 
+
 @layer base {
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground drop-shadow-lg;
   }
@@ -72,6 +73,10 @@
 .cl-identityPreview,
 .cl-phoneInputBox {
   @apply border border-input bg-background;
+}
+
+.cl-navbar {
+  @apply bg-background text-foreground;
 }
 
 .cl-dividerLine {
