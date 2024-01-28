@@ -6,7 +6,7 @@ import PhoneMockup from "@/components/shared/phone-mockup"
 
 export default function Component() {
   return (
-    <>
+    <main className="bg-dotted-spacing-4 bg-dotted-primary/40">
       <section className="min-h-screen w-screen px-10 md:px-24 flex flex-col lg:flex-row gap-12 items-center justify-center">
         {/* Typography & CTA */}
         <div className="mt-32 lg:mt-0 max-w-sm sm:max-w-md md:max-w-2xl lg:max-w-3xl">
@@ -36,17 +36,17 @@ export default function Component() {
         </div>
         <div className="flex flex-col md:flex-row gap-8">
           <FeatureCard
-            icon={<CounterClockwiseClockIcon className="w-6 h-6 text-foreground"/>} 
+            icon={<CounterClockwiseClockIcon className="w-6 h-6 text-foreground" />}
             title="Rapid Setup"
             description="Create a beautiful profile in minutes, so you can focus on what matters."
           />
-          <FeatureCard 
-            icon={<LockClosedIcon className="w-6 h-6 text-foreground"/>} 
+          <FeatureCard
+            icon={<LockClosedIcon className="w-6 h-6 text-foreground" />}
             title="Private & Secure"
             description="We take privacy and security very seriously. Your data is safe with us."
           />
           <FeatureCard
-            icon={<LightningBoltIcon className="w-6 h-6 text-foreground"/>} 
+            icon={<LightningBoltIcon className="w-6 h-6 text-foreground" />}
             title="AI-Powered Suggestions"
             description="Our profile suggestions help you create a profile that stands out."
           />
@@ -62,6 +62,6 @@ export default function Component() {
           <ClaimUsername />
         </div>
       </section>
-    </>
+    </main>
   )
 }

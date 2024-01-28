@@ -14,9 +14,8 @@ import {
 } from "@/components/ui/avatar"
 import {
   AvatarIcon,
+  GearIcon,
   PersonIcon,
-  Pencil2Icon,
-  EyeOpenIcon,
   ExitIcon
 } from "@radix-ui/react-icons"
 import { SignOutButton, currentUser } from "@clerk/nextjs"
@@ -42,17 +41,12 @@ export default async function UserDropdown() {
         <DropdownMenuSeparator />
         <DropdownMenuItem>
           <Link href="/account" className="flex gap-2 items-center justify-center">
-            <PersonIcon /> My Account
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem>
-          <Link href="/edit" className="flex gap-2 items-center justify-center">
-            <Pencil2Icon /> Edit Account
+            <GearIcon /> Account
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem>
           <Link href={`/@${user?.username}`} className="flex gap-2 items-center justify-center">
-            <EyeOpenIcon />Preview Profile
+            <PersonIcon /> Profile
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />

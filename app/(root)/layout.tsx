@@ -9,7 +9,7 @@ export default function HomeLayout({
 }) {
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-      <div className="flex flex-col min-h-screen bg-dotted-spacing-4 bg-dotted-primary/40">
+      <div className="flex flex-col min-h-screen">
         <Header />
         {children}
         <Footer />
