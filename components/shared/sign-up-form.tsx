@@ -13,13 +13,16 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
+import { useToast } from "../ui/use-toast"
+import { useSignUp } from "@clerk/nextjs";
+import { Toaster } from "../ui/toaster"
 
 // Form Schema
-const formSchema = z.object({
+const formSchema: z.Schema = z.object({
   username: z.string()
     .regex(/^[a-z,A-Z,0-9,_]+$/, { message: "Username can only contain letters, numbers, and underscores" })
     .min(4, { message: "Username must be at least 4 characters long" }),
-  email: z.string().email({ message: "Please enter a valid email" }),
+  emailAddress: z.string().email({ message: "Please enter a valid email" }),
   password: z.string()
     .regex(/^[a-z,A-Z,0-9,!@#$%^&*]+$/, { message: "Password can only contain letters, numbers, and !@#$%^&*" })
     .min(8, { message: "Password must be at least 8 characters long" })
@@ -31,19 +34,37 @@ const formSchema = z.object({
 })
 
 export default function SignUpForm() {
+  const { isLoaded, signUp, setActive } = useSignUp();
+  const { toast } = useToast();
+
   // Form Definition
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       username: "",
-      email: "",
+      emailAddress: "",
       password: "",
       confirmPassword: "",
     },
   })
-  // Form Submission Handler
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
+  // Submit to Clerk
+  async function onSubmit(values: z.infer<typeof formSchema>, error: any) {
+    error.preventDefault();
+    if (!isLoaded) return;
+
+    const { username, emailAddress, password } = values;
+    await signUp
+      .create({ username, emailAddress, password })
+      .then((result) => {
+        if (result.status === "complete")
+          setActive({ session: result.createdSessionId });
+      })
+      .catch((err) => {
+        toast({
+          title: "Error creating account",
+          description: err.errors[0].longMessage,
+        })
+      });
   }
 
   return (
@@ -64,7 +85,7 @@ export default function SignUpForm() {
         />
         <FormField
           control={form.control}
-          name="email"
+          name="emailAddress"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Email</FormLabel>
