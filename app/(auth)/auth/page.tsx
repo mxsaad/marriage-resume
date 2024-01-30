@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import { UserAuthForm } from "@/components/shared/user-auth-form"
+import SignUpForm from "@/components/shared/sign-up-form"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { useState } from "react"
@@ -30,23 +30,20 @@ export default function AuthenticationPage() {
             <footer className="text-sm mt-2">Abu Rijaal</footer>
           </blockquote>
         </section>
-        <section className="bg-background w-full lg:w-1/2 h-screen flex items-center justify-center">
-          <div className="mx-auto flex w-2/3 flex-col justify-center space-y-2 max-w-[350px]">
-            <div className="flex flex-col space-y-2 text-center mb-4">
+        <section className="bg-background w-full lg:w-1/2 min-h-screen flex items-center justify-center">
+          <div className="mx-auto flex w-2/3 flex-col justify-center gap-2 my-12 max-w-[350px]">
+            <div className="flex flex-col text-center">
               <h1 className="text-2xl font-semibold tracking-tight">
                 {isLoggingIn ? "Welcome Back!" : "Join MarriageResume"}
               </h1>
-              <p className="text-sm text-muted-foreground">
-                {isLoggingIn ? "Get access to your beautiful profile." : "Create a free account to get started."}
+              <p className="text-center text-sm text-muted-foreground">
+                {isLoggingIn ? "Don't have an account? " : "Already have an account? "}
+                <Button variant="link" className="px-0" onClick={() => setIsLoggingIn(!isLoggingIn)}>
+                  {isLoggingIn ? "Sign up" : "Sign in"}
+                </Button>.
               </p>
             </div>
-            <UserAuthForm isLoggingIn={isLoggingIn} />
-            <p className="px-8 text-center text-sm text-muted-foreground">
-              {isLoggingIn ? "Don't have an account? " : "Already have an account? "}
-              <Button variant="link" className="px-0" onClick={() => setIsLoggingIn(!isLoggingIn)}>
-                {isLoggingIn ? "Sign up" : "Sign in"}
-              </Button>.
-            </p>
+            <SignUpForm />
           </div>
         </section>
       </div>
