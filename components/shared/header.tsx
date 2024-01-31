@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { ModeToggle } from "@/components/ui/mode-toggle"
 import { Button } from "@/components/ui/button"
-import { SignUpButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs"
+import { SignUpButton, SignedIn, SignedOut } from "@clerk/nextjs"
 import Image from "next/image"
 import UserDropdown from "@/components/shared/user-dropdown"
 
@@ -18,9 +18,9 @@ const Header = () => {
           <UserDropdown />
         </SignedIn>
         <SignedOut>
-          <SignUpButton>
+          <Link href="/auth">
             <Button>Sign In</Button>
-          </SignUpButton>
+          </Link>
         </SignedOut>
       </div>
     </header>

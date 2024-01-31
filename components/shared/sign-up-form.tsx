@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/form"
 import { useToast } from "../ui/use-toast"
 import { useSignUp } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
 // Form Schema
 const formSchema: z.Schema = z.object({
@@ -35,6 +36,7 @@ const formSchema: z.Schema = z.object({
 export default function SignUpForm() {
   const { isLoaded, signUp, setActive } = useSignUp();
   const { toast } = useToast();
+  const router = useRouter();
 
   // Form Definition
   const form = useForm<z.infer<typeof formSchema>>({
@@ -54,9 +56,11 @@ export default function SignUpForm() {
     const { username, emailAddress, password } = values;
     await signUp
       .create({ username, emailAddress, password })
-      .then((result) => {
-        if (result.status === "complete")
-          setActive({ session: result.createdSessionId });
+      .then(async (result) => {
+        if (result.status === "complete") {
+          await setActive({ session: result.createdSessionId });
+          router.replace("/profile");
+        }
       })
       .catch((err) => {
         toast({
