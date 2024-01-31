@@ -15,7 +15,6 @@ import {
 } from "@/components/ui/form"
 import { useToast } from "../ui/use-toast"
 import { useSignUp } from "@clerk/nextjs";
-import { Toaster } from "../ui/toaster"
 
 // Form Schema
 const formSchema: z.Schema = z.object({
