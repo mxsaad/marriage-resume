@@ -1,16 +1,16 @@
 import { currentUser } from "@clerk/nextjs"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { EyeOpenIcon, Pencil2Icon } from "@radix-ui/react-icons";
+import ViewProfile from "@/components/shared/view-profile";
 
 export default async function Profile({ params }: { params: { username: string } }) {
   const user = await currentUser();
   return (
-    <main className="min-h-screen w-screen">
-      <div className="container flex flex-col items-center">
-        <Tabs defaultValue="view" className="w-[400px] mt-24 text-center">
-          {/* %40 represents the @ symbol in the url */}
-          {`%40${user?.username}` === params.username.toLowerCase() && (
-            <TabsList>
+    <main className="min-h-screen w-screen px-6 py-12">
+      <div className="flex flex-col items-center">
+        <Tabs defaultValue="view" className="max-w-prose text-center">
+          {`%40${user?.username}` === params.username.toLowerCase() && ( // %40 = @ symbol in URL
+            <TabsList className="mt-6 mb-4">
               <TabsTrigger value="view" className="flex gap-2 items-center">
                 <EyeOpenIcon /> View
               </TabsTrigger>
@@ -20,9 +20,7 @@ export default async function Profile({ params }: { params: { username: string }
             </TabsList>
           )}
           <TabsContent value="view">
-            <section>
-              <h1 className="text-4xl font-bold">Profile</h1>
-            </section>
+            <ViewProfile />
           </TabsContent>
           <TabsContent value="edit">
             <section>
