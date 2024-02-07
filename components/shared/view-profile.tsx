@@ -11,7 +11,7 @@ import {
 export default function ViewProfile() {
   return (
     <div className="flex flex-col items-center text-left gap-4">
-      {/* Summary */}
+      {/* Bio */}
       <div className="w-full flex flex-col sm:flex-row items-center justify-center gap-4 p-4">
         <Avatar className="w-32 h-32">
           <AvatarImage src="https://images.squarespace-cdn.com/content/v1/5616ac17e4b018d366f57f53/bc84bfd0-39fa-47df-b0af-b5fb86612b01/has+logo.png" alt="Profile Picture" />
@@ -90,8 +90,8 @@ export default function ViewProfile() {
           <Badge>Complexion</Badge>
         </div>
         <Separator />
-        <Accordion type="single" defaultValue="item-1" collapsible>
-          <AccordionItem value="item-1">
+        <Accordion type="single" defaultValue="dress" collapsible>
+          <AccordionItem value="dress">
             <AccordionTrigger className="text-xl font-bold">
               Dress
             </AccordionTrigger>
@@ -99,7 +99,7 @@ export default function ViewProfile() {
               I wear niqab, abaya, and gloves.
             </AccordionContent>
           </AccordionItem>
-          <AccordionItem value="item-2">
+          <AccordionItem value="grooming">
             <AccordionTrigger className="text-xl font-bold">
               Grooming
             </AccordionTrigger>
@@ -107,7 +107,7 @@ export default function ViewProfile() {
               I keep a beard and wear kohl.
             </AccordionContent>
           </AccordionItem>
-          <AccordionItem value="item-3">
+          <AccordionItem value="other">
             <AccordionTrigger className="text-xl font-bold">
               Other
             </AccordionTrigger>
@@ -185,7 +185,7 @@ export default function ViewProfile() {
         <Separator />
         <Accordion type="single" defaultValue="item-1" collapsible className="-mt-2">
           <AccordionItem value="item-1">
-            <AccordionTrigger className="text-xl font-bold">Desired Qualities</AccordionTrigger>
+            <AccordionTrigger className="text-xl font-bold">Qualities</AccordionTrigger>
             <AccordionContent className="text-base text-muted-foreground">
               <ul className="ml-6 list-disc [&>li]:mt-2 text-muted-foreground">
                 <li>Sigma Male</li>
