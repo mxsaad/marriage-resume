@@ -12,6 +12,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  FormDescription,
 } from "@/components/ui/form"
 import {
   Select,
@@ -72,7 +73,7 @@ export default function ReligionForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="container flex flex-col gap-4">
-        <div className="flex gap-4">
+        <div className="flex flex-wrap gap-4">
           <FormField
             control={form.control}
             name="aqeedah"
@@ -94,6 +95,9 @@ export default function ReligionForm() {
                   </SelectContent>
                 </Select>
                 <FormMessage />
+                <FormDescription>
+                  Your religious creed or belief.
+                </FormDescription>
               </FormItem>
             )}
           />
@@ -118,6 +122,9 @@ export default function ReligionForm() {
                   </SelectContent>
                 </Select>
                 <FormMessage />
+                <FormDescription>
+                  Your school of jurisprudence.
+                </FormDescription>
               </FormItem>
             )}
           />
@@ -136,6 +143,9 @@ export default function ReligionForm() {
                 />
               </FormControl>
               <FormMessage />
+              <FormDescription>
+                How you practice your religion.
+              </FormDescription>
             </FormItem>
           )}
         />
@@ -153,6 +163,9 @@ export default function ReligionForm() {
                 />
               </FormControl>
               <FormMessage />
+              <FormDescription>
+                Your knowledge of the religion.
+              </FormDescription>
             </FormItem>
           )}
         />
