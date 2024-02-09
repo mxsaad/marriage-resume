@@ -4,6 +4,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
+import SummaryForm from "../forms/summary-form"
+import ReligionForm from "../forms/religion-form"
 
 export default function EditProfile() {
   return (
@@ -15,7 +17,7 @@ export default function EditProfile() {
             Summary
           </AccordionTrigger>
           <AccordionContent>
-            Form Here
+            <SummaryForm />
           </AccordionContent>
         </AccordionItem>
         {/* Religion */}
@@ -24,7 +26,7 @@ export default function EditProfile() {
             Religion
           </AccordionTrigger>
           <AccordionContent>
-            Form Here
+            <ReligionForm />
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="appearance">
