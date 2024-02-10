@@ -246,15 +246,12 @@ export default function AppearanceForm() {
               <FormLabel>Dress</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="Please specify"
+                  placeholder="Your style of dressing."
                   className="min-h-32 resize-y max-h-64"
                   {...field}
                 />
               </FormControl>
               <FormMessage />
-              <FormDescription>
-                Your clothing and dressing style.
-              </FormDescription>
             </FormItem>
           )}
         />
@@ -266,15 +263,12 @@ export default function AppearanceForm() {
               <FormLabel>Grooming</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="Please specify"
+                  placeholder="Your grooming habits."
                   className="min-h-32 resize-y max-h-64"
                   {...field}
                 />
               </FormControl>
               <FormMessage />
-              <FormDescription>
-                Your grooming habits.
-              </FormDescription>
             </FormItem>
           )}
         />
@@ -286,15 +280,12 @@ export default function AppearanceForm() {
               <FormLabel>Other</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="Please specify"
+                  placeholder="Any other details about your appearance."
                   className="min-h-32 resize-y max-h-64"
                   {...field}
                 />
               </FormControl>
               <FormMessage />
-              <FormDescription>
-                Anything else about your appearance.
-              </FormDescription>
             </FormItem>
           )}
         />

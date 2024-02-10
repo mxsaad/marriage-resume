@@ -7,6 +7,7 @@ import {
 import SummaryForm from "../forms/summary-form"
 import ReligionForm from "../forms/religion-form"
 import AppearanceForm from "../forms/appearance-form"
+import OccupationForm from "../forms/occupation-form"
 
 export default function EditProfile() {
   return (
@@ -44,7 +45,7 @@ export default function EditProfile() {
             Occupation
           </AccordionTrigger>
           <AccordionContent>
-            Form Here
+            <OccupationForm />
           </AccordionContent>
         </AccordionItem>
         {/* Goals */}

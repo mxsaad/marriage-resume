@@ -163,9 +163,6 @@ export default function ReligionForm() {
                 />
               </FormControl>
               <FormMessage />
-              <FormDescription>
-                Your knowledge of the religion.
-              </FormDescription>
             </FormItem>
           )}
         />
