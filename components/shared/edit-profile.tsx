@@ -8,6 +8,7 @@ import SummaryForm from "../forms/summary-form"
 import ReligionForm from "../forms/religion-form"
 import AppearanceForm from "../forms/appearance-form"
 import OccupationForm from "../forms/occupation-form"
+import FamilyForm from "../forms/family-form"
 
 export default function EditProfile() {
   return (
@@ -63,7 +64,7 @@ export default function EditProfile() {
             Family
           </AccordionTrigger>
           <AccordionContent>
-            Form Here
+            <FamilyForm />
           </AccordionContent>
         </AccordionItem>
         {/* My Ideal Spouse */}
