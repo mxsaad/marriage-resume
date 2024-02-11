@@ -137,7 +137,7 @@ export default function AppearanceForm() {
             control={form.control}
             name="height"
             render={({ field }) => (
-              <FormItem className="flex-grow">
+              <FormItem>
                 <FormLabel>Height</FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
@@ -164,7 +164,7 @@ export default function AppearanceForm() {
             control={form.control}
             name="weight"
             render={({ field }) => (
-              <FormItem className="flex-grow">
+              <FormItem>
                 <FormLabel>Weight</FormLabel>
                 <FormControl>
                   <Input
@@ -187,7 +187,7 @@ export default function AppearanceForm() {
             control={form.control}
             name="complexion"
             render={({ field }) => (
-              <FormItem className="flex-grow">
+              <FormItem>
                 <FormLabel>Complexion</FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
@@ -214,7 +214,7 @@ export default function AppearanceForm() {
             control={form.control}
             name="build"
             render={({ field }) => (
-              <FormItem className="flex-grow">
+              <FormItem>
                 <FormLabel>Build</FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
@@ -289,7 +289,7 @@ export default function AppearanceForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-fit">Save</Button>
+        <Button type="submit" className="w-fit self-end">Save</Button>
       </form>
     </Form>
   )

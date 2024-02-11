@@ -143,9 +143,6 @@ export default function ReligionForm() {
                 />
               </FormControl>
               <FormMessage />
-              <FormDescription>
-                How you practice your religion.
-              </FormDescription>
             </FormItem>
           )}
         />
@@ -166,7 +163,7 @@ export default function ReligionForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-fit">Save</Button>
+        <Button type="submit" className="w-fit self-end">Save</Button>
       </form>
     </Form>
   )

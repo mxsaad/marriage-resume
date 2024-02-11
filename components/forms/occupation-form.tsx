@@ -134,7 +134,7 @@ export default function OccupationForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-fit">Save</Button>
+        <Button type="submit" className="w-fit self-end">Save</Button>
       </form>
     </Form>
   )

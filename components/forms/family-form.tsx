@@ -55,7 +55,7 @@ export default function FamilyForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-fit">Save</Button>
+        <Button type="submit" className="w-fit self-end">Save</Button>
       </form>
     </Form>
   )
