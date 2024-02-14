@@ -167,6 +167,21 @@ export default function ViewProfile() {
       <section className="w-full flex flex-col gap-2 border-2 rounded-[--radius] p-4">
         <h2 className="text-2xl font-bold">Family</h2>
         <Separator />
+        <h2 className="text-xl font-bold">Background</h2>
+        <ul className="list-decimal flex flex-col gap-2 text-muted-foreground">
+          <li className="flex gap-2 items-center">
+            Countries:
+            <Badge>Pakistan</Badge>
+            <Badge>Bosnia</Badge>
+          </li>
+          <li className="flex gap-2 items-center">
+            Languages:
+            <Badge>Urdu</Badge>
+            <Badge>English</Badge>
+            <Badge>Arabic</Badge>
+          </li>
+        </ul>
+        <h2 className="text-xl font-bold">Description</h2>
         <p className="text-muted-foreground">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec dui
           eget mi ultrices vehicula. Nam eget nisl auctor, tincidunt elit vitae,
