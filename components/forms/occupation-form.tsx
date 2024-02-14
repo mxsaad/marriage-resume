@@ -76,7 +76,7 @@ export default function OccupationForm() {
                 <PopoverTrigger asChild>
                   <FormControl>
                     <Button variant="outline" role="combobox" className={cn(
-                      "w-full justify-start gap-2",
+                      "w-full justify-start h-fit gap-2",
                       !field.value && "text-muted-foreground"
                     )}>
                       <CaretSortIcon className="h-4 w-4 shrink-0 opacity-50" />

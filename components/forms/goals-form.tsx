@@ -58,15 +58,15 @@ export default function GoalsForm() {
     name: "longTerm",
   })
 
-  useEffect(() => {
-    shortTermAppend("");
-    longTermAppend("");
-  }, [])
-
   // Submit
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values)
   }
+
+  useEffect(() => {
+    shortTermAppend("");
+    longTermAppend("");
+  }, [])
 
   return (
     <Form {...form}>
