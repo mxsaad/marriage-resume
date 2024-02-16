@@ -11,6 +11,7 @@ import OccupationForm from "../forms/occupation-form"
 import FamilyForm from "../forms/family-form"
 import GoalsForm from "../forms/goals-form"
 import SpouseForm from "../forms/spouse-form"
+import ContactForm from "../forms/contact-form"
 
 export default function EditProfile() {
   return (
@@ -76,6 +77,15 @@ export default function EditProfile() {
           </AccordionTrigger>
           <AccordionContent>
             <SpouseForm />
+          </AccordionContent>
+        </AccordionItem>
+        {/* Contact Information */}
+        <AccordionItem value="contact">
+          <AccordionTrigger className="text-xl font-bold">
+            Contact Information
+          </AccordionTrigger>
+          <AccordionContent>
+            <ContactForm />
           </AccordionContent>
         </AccordionItem>
       </Accordion>

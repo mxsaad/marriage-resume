@@ -11,7 +11,7 @@ export default async function Profile({ params }: { params: { username: string }
       <div className="flex flex-col items-center">
         <Tabs defaultValue="view" className="w-full max-w-prose text-center">
           {`%40${user?.username}` === params.username.toLowerCase() && ( // %40 = @ symbol in URL
-            <TabsList className="mt-6 mb-4">
+            <TabsList className="mt-10 mb-4">
               <TabsTrigger value="view" className="flex gap-2 items-center">
                 <EyeOpenIcon /> View
               </TabsTrigger>
