@@ -6,7 +6,7 @@ import PhoneMockup from "@/components/shared/phone-mockup"
 
 export default function Component() {
   return (
-    <main className="bg-dotted-spacing-4 bg-dotted-primary/40">
+    <main>
       <section className="min-h-screen w-screen px-10 md:px-24 flex flex-col lg:flex-row gap-12 items-center justify-center">
         {/* Typography & CTA */}
         <div className="mt-32 lg:mt-0 max-w-sm sm:max-w-md md:max-w-2xl lg:max-w-3xl">
