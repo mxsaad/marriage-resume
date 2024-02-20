@@ -18,7 +18,7 @@ const Header = () => {
           <UserDropdown />
         </SignedIn>
         <SignedOut>
-          <Link href="/auth">
+          <Link href="/login">
             <Button>Sign In</Button>
           </Link>
         </SignedOut>

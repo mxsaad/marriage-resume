@@ -51,6 +51,7 @@ export default function AuthenticationPage() {
             {/* Form */}
             {isSigningUp ? <SignUpForm /> : <SignInForm />}
             {/* Divider */}
+            { /*
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
                 <span className="w-full border-t" />
@@ -62,7 +63,9 @@ export default function AuthenticationPage() {
               </div>
             </div>
             {/* Social Login Buttons */}
+            {/*
             <SocialLoginButtons />
+            */}
           </div>
         </section>
       </div>
