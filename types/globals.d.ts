@@ -6,4 +6,5 @@ declare global {
       onboardingComplete?: boolean
     }
   }
+
 }

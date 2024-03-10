@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { Button } from "@/components/ui/button"
-import { Textarea } from "@/components/ui/textarea"
-import { Badge } from "@/components/ui/badge"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Badge } from "@/components/ui/badge";
 import {
   Form,
   FormControl,
@@ -14,77 +14,61 @@ import {
   FormLabel,
   FormMessage,
   FormDescription,
-} from "@/components/ui/form"
+} from "@/components/ui/form";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
+} from "@/components/ui/popover";
 import {
   Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
-} from "@/components/ui/command"
-import { cn } from "@/lib/utils"
-import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons"
+} from "@/components/ui/command";
+import { cn } from "@/lib/utils";
+import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
+import locationsData from "@/data/locations.json";
+import languagesData from "@/data/languages.json";
 
 // Form Schema
 const formSchema: z.Schema = z.object({
-  countries: z.array(z.string())
+  countries: z
+    .set(z.string())
+    .min(1, { message: "You must have at least 1 country" })
     .max(5, { message: "You can only have at most 5 countries" }),
-  languages: z.array(z.string())
+  languages: z
+    .set(z.string())
+    .min(1, { message: "You must have at least 1 language" })
     .max(5, { message: "You can only have at most 5 languages" }),
-  description: z.string({ required_error: "Description is required" })
+  description: z
+    .string()
     .max(1000, { message: "Must be at most 1000 characters long" }),
-})
-
-const countries = [
-  "Afghanistan",
-  "Albania",
-  "Algeria",
-  "Andorra",
-  "Angola",
-  "Antigua and Barbuda",
-  "Argentina",
-  "Pakistan",
-  "Palau",
-  "India",
-]
-
-const languages = [
-  "English",
-  "Spanish",
-  "French",
-  "Arabic",
-  "Bengali",
-  "Russian",
-  "Portuguese",
-  "Urdu",
-  "Punjabi",
-  "German",
-]
+});
 
 export default function FamilyForm() {
   // Form Definition
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      countries: [],
-      languages: [],
-      description: "Not specified",
+      countries: new Set<string>(),
+      languages: new Set<string>(),
+      description: "",
     },
-  })
+  });
 
   // Submit
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
+    console.log(values);
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="container flex flex-col gap-4">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="container flex flex-col gap-4"
+      >
         <FormField
           control={form.control}
           name="countries"
@@ -94,35 +78,54 @@ export default function FamilyForm() {
               <Popover>
                 <PopoverTrigger asChild>
                   <FormControl>
-                    <Button variant="outline" role="combobox" className={cn(
-                      "w-full justify-start h-fit gap-2",
-                      !field.value && "text-muted-foreground"
-                    )}>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      className="w-full justify-start h-fit gap-2 font-normal"
+                    >
                       <CaretSortIcon className="h-4 w-4 shrink-0 opacity-50" />
                       <span className="flex flex-wrap-reverse gap-2">
-                        {field.value.map((value: string, index: number) => (
-                          <Badge key={index}>{value}</Badge>
-                        ))}
+                        {field.value.size
+                          ? Array.from(field.value).map((country, index) => (
+                              <Badge key={index}>{country as string}</Badge>
+                            ))
+                          : "Please select"}
                       </span>
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
                 <PopoverContent className="w-fit p-0">
                   <Command>
-                    <CommandInput placeholder="Search countries..." className="h-9" />
+                    <CommandInput
+                      placeholder="Search countries..."
+                      className="h-9"
+                    />
                     <CommandEmpty>No countries found.</CommandEmpty>
                     <CommandGroup>
-                      {countries.map((value, index) => (
+                      {locationsData.map((country: any, index: number) => (
                         <CommandItem
                           key={index}
+                          value={country.countryName}
                           onSelect={() => {
-                            if (field.value.includes(value))
-                              form.setValue("countries", field.value.filter((country: string) => country !== value))
-                            else if (field.value.length < 5)
-                              form.setValue("countries", [...field.value, value])
-                          }}>
-                          {value}
-                          <CheckIcon className={cn("ml-auto h-4 w-4", field.value.includes(value) ? "opacity-100" : "opacity-0")} />
+                            if (field.value.has(country.countryName)) {
+                              field.value.delete(country.countryName);
+                              form.setValue("countries", field.value);
+                            } else if (field.value.size < 5)
+                              form.setValue(
+                                "countries",
+                                field.value.add(country.countryName),
+                              );
+                          }}
+                        >
+                          {country.countryName}
+                          <CheckIcon
+                            className={cn(
+                              "ml-auto h-4 w-4",
+                              field.value.has(country.countryName)
+                                ? "opacity-100"
+                                : "opacity-0",
+                            )}
+                          />
                         </CommandItem>
                       ))}
                     </CommandGroup>
@@ -130,9 +133,7 @@ export default function FamilyForm() {
                 </PopoverContent>
               </Popover>
               <FormMessage />
-              <FormDescription>
-                Select up to 5 countries.
-              </FormDescription>
+              <FormDescription>Select up to 5 countries.</FormDescription>
             </FormItem>
           )}
         />
@@ -145,35 +146,54 @@ export default function FamilyForm() {
               <Popover>
                 <PopoverTrigger asChild>
                   <FormControl>
-                    <Button variant="outline" role="combobox" className={cn(
-                      "w-full justify-start h-fit gap-2",
-                      !field.value && "text-muted-foreground"
-                    )}>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      className="w-full justify-start h-fit gap-2 font-normal"
+                    >
                       <CaretSortIcon className="h-4 w-4 shrink-0 opacity-50" />
                       <span className="flex flex-wrap-reverse gap-2">
-                        {field.value.map((value: string, index: number) => (
-                          <Badge key={index}>{value}</Badge>
-                        ))}
+                        {field.value.size
+                          ? Array.from(field.value).map((language, index) => (
+                              <Badge key={index}>{language as string}</Badge>
+                            ))
+                          : "Please select"}
                       </span>
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
                 <PopoverContent className="w-fit p-0">
                   <Command>
-                    <CommandInput placeholder="Search languages..." className="h-9" />
+                    <CommandInput
+                      placeholder="Search languages..."
+                      className="h-9"
+                    />
                     <CommandEmpty>No languages found.</CommandEmpty>
                     <CommandGroup>
-                      {languages.map((value, index) => (
+                      {languagesData.map((language: string, index: number) => (
                         <CommandItem
                           key={index}
+                          value={language}
                           onSelect={() => {
-                            if (field.value.includes(value))
-                              form.setValue("languages", field.value.filter((language: string) => language !== value))
-                            else if (field.value.length < 5)
-                              form.setValue("languages", [...field.value, value])
-                          }}>
-                          {value}
-                          <CheckIcon className={cn("ml-auto h-4 w-4", field.value.includes(value) ? "opacity-100" : "opacity-0")} />
+                            if (field.value.has(language)) {
+                              field.value.delete(language);
+                              form.setValue("languages", field.value);
+                            } else if (field.value.size < 5)
+                              form.setValue(
+                                "languages",
+                                field.value.add(language),
+                              );
+                          }}
+                        >
+                          {language}
+                          <CheckIcon
+                            className={cn(
+                              "ml-auto h-4 w-4",
+                              field.value.has(language)
+                                ? "opacity-100"
+                                : "opacity-0",
+                            )}
+                          />
                         </CommandItem>
                       ))}
                     </CommandGroup>
@@ -181,9 +201,7 @@ export default function FamilyForm() {
                 </PopoverContent>
               </Popover>
               <FormMessage />
-              <FormDescription>
-                Select up to 5 languages.
-              </FormDescription>
+              <FormDescription>Select up to 5 languages.</FormDescription>
             </FormItem>
           )}
         />
@@ -197,6 +215,7 @@ export default function FamilyForm() {
                 <Textarea
                   placeholder="Describe your family's background and situation."
                   className="min-h-32 resize-y max-h-64"
+                  required
                   {...field}
                 />
               </FormControl>
@@ -204,8 +223,10 @@ export default function FamilyForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-fit self-end">Save</Button>
+        <Button type="submit" className="w-fit self-end">
+          Save
+        </Button>
       </form>
     </Form>
-  )
+  );
 }

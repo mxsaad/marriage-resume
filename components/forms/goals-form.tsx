@@ -20,11 +20,9 @@ import { Cross2Icon } from "@radix-ui/react-icons"
 
 // Form Schema
 const formSchema: z.Schema = z.object({
-  shortTerm: z.array(z.string()
-    .refine((val) => val.trim().length > 0, { message: "Goal is required" }))
+  shortTerm: z.array(z.string())
     .max(5, { message: "You can only have at most 5 goals" }),
-  longTerm: z.array(z.string()
-    .refine((val) => val.trim().length > 0, { message: "Goal is required" }))
+  longTerm: z.array(z.string())
     .max(5, { message: "You can only have at most 5 goals" }),
 })
 
@@ -88,7 +86,7 @@ export default function GoalsForm() {
                     </FormDescription>
                     <FormControl>
                       <div className="flex w-full items-center gap-1">
-                        <Input type="text" placeholder="Enter goal" {...field} />
+                        <Input type="text" placeholder="Please enter" required {...field} />
                         {index !== 0 &&
                           <Button type="button" variant="outline" size="icon" onClick={() => shortTermRemove(index)}>
                             <Cross2Icon />
@@ -121,7 +119,7 @@ export default function GoalsForm() {
                     </FormDescription>
                     <FormControl>
                       <div className="flex w-full items-center gap-1">
-                        <Input type="text" placeholder="Enter goal" {...field} />
+                        <Input type="text" placeholder="Please enter" required {...field} />
                         {index !== 0 &&
                           <Button type="button" variant="outline" size="icon" onClick={() => longTermRemove(index)}>
                             <Cross2Icon />

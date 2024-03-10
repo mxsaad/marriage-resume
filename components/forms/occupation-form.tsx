@@ -32,9 +32,9 @@ import { cn } from "@/lib/utils"
 
 // Form Schema
 const formSchema: z.Schema = z.object({
-  tags: z.array(z.string())
+  tags: z.set(z.string())
     .max(3, { message: "You can only have at most 3 tags" }),
-  occupation: z.string({ required_error: "Occupation is required" })
+  description: z.string()
     .max(1000, { message: "Must be at most 1000 characters long" })
 })
 
@@ -53,8 +53,8 @@ export default function OccupationForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      tags: [],
-      occupation: "Not specified",
+      tags: new Set<string>(),
+      description: "",
     },
   })
 
@@ -75,35 +75,54 @@ export default function OccupationForm() {
               <Popover>
                 <PopoverTrigger asChild>
                   <FormControl>
-                    <Button variant="outline" role="combobox" className={cn(
-                      "w-full justify-start h-fit gap-2",
-                      !field.value && "text-muted-foreground"
-                    )}>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      className="w-full justify-start h-fit gap-2 font-normal"
+                    >
                       <CaretSortIcon className="h-4 w-4 shrink-0 opacity-50" />
                       <span className="flex flex-wrap-reverse gap-2">
-                        {field.value.map((value: string, index: number) => (
-                          <Badge key={index}>{value}</Badge>
-                        ))}
+                        {field.value.size
+                          ? Array.from(field.value).map((tag, index) => (
+                              <Badge key={index}>{tag as string}</Badge>
+                            ))
+                          : "Please select"}
                       </span>
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
                 <PopoverContent className="w-fit p-0">
                   <Command>
-                    <CommandInput placeholder="Search tags..." className="h-9" />
+                    <CommandInput
+                      placeholder="Search tags..."
+                      className="h-9"
+                    />
                     <CommandEmpty>No tags found.</CommandEmpty>
                     <CommandGroup>
-                      {tags.map((value, index) => (
+                      {tags.map((tag: string, index: number) => (
                         <CommandItem
                           key={index}
+                          value={tag}
                           onSelect={() => {
-                            if (field.value.includes(value))
-                              form.setValue("tags", field.value.filter((tag: string) => tag !== value))
-                            else if (field.value.length < 3)
-                              form.setValue("tags", [...field.value, value])
-                          }}>
-                          {value}
-                          <CheckIcon className={cn("ml-auto h-4 w-4", field.value.includes(value) ? "opacity-100" : "opacity-0")} />
+                            if (field.value.has(tag)) {
+                              field.value.delete(tag);
+                              form.setValue("tags", field.value);
+                            } else if (field.value.size < 3)
+                              form.setValue(
+                                "tags",
+                                field.value.add(tag),
+                              );
+                          }}
+                        >
+                          {tag}
+                          <CheckIcon
+                            className={cn(
+                              "ml-auto h-4 w-4",
+                              field.value.has(tag)
+                                ? "opacity-100"
+                                : "opacity-0",
+                            )}
+                          />
                         </CommandItem>
                       ))}
                     </CommandGroup>
@@ -111,9 +130,7 @@ export default function OccupationForm() {
                 </PopoverContent>
               </Popover>
               <FormMessage />
-              <FormDescription>
-                Select up to 3 tags.
-              </FormDescription>
+              <FormDescription>Select up to 3 tags.</FormDescription>
             </FormItem>
           )}
         />
@@ -127,6 +144,7 @@ export default function OccupationForm() {
                 <Textarea
                   placeholder="Describe what you do for a living."
                   className="min-h-32 resize-y max-h-64"
+                  required
                   {...field}
                 />
               </FormControl>

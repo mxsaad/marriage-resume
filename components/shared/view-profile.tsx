@@ -90,32 +90,12 @@ export default function ViewProfile() {
           <Badge>Complexion</Badge>
         </div>
         <Separator />
-        <Accordion type="single" defaultValue="dress" collapsible>
-          <AccordionItem value="dress">
-            <AccordionTrigger className="text-xl font-bold">
-              Dress
-            </AccordionTrigger>
-            <AccordionContent className="text-base text-muted-foreground">
-              I wear niqab, abaya, and gloves.
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value="grooming">
-            <AccordionTrigger className="text-xl font-bold">
-              Grooming
-            </AccordionTrigger>
-            <AccordionContent className="text-base text-muted-foreground">
-              I keep a beard and wear kohl.
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value="other">
-            <AccordionTrigger className="text-xl font-bold">
-              Other
-            </AccordionTrigger>
-            <AccordionContent className="text-base text-muted-foreground">
-              I love wearing fragrances.
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
+        <p className="text-muted-foreground">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec dui
+          eget mi ultrices vehicula. Nam eget nisl auctor, tincidunt elit vitae,
+          fermentum mi. Nulla nec dui eget mi ultrices vehicula. Nam eget nisl
+          auctor, tincidunt elit vitae, fermentum mi.
+        </p>
       </section>
 
       {/* Occupation */}

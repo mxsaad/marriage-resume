@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Form,
   FormControl,
@@ -13,16 +13,17 @@ import {
   FormLabel,
   FormMessage,
   FormDescription,
-} from "@/components/ui/form"
-import { PhoneInput } from "@/components/ui/phone-input"
+} from "@/components/ui/form";
+import { PhoneInput } from "@/components/ui/phone-input";
 import { isValidPhoneNumber } from "react-phone-number-input";
 
 // Form Schema
 const formSchema: z.Schema = z.object({
-  email: z.string({ required_error: "Email is required" }).email(),
-  phone: z.string({ required_error: "Phone number is required" })
+  email: z.string().email(),
+  phone: z
+    .string()
     .refine(isValidPhoneNumber, { message: "Invalid phone number" }),
-})
+});
 
 export default function ContactForm() {
   // Form Definition
@@ -32,19 +33,26 @@ export default function ContactForm() {
       email: "",
       phone: "",
     },
-  })
+  });
 
   // Submit
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
+    console.log(values);
   }
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="container flex flex-col gap-4">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="container flex flex-col gap-4"
+      >
         <p className="text-muted-foreground">
-          We will never use this information to contact you. It is only provided to matches with your permission for them to contact you.
-          <br /><br />
-          Note: Sisters are expected to fear Allah (ﷻ) and only provide the contact information of their <i>wali</i> (guardian) with his permission.
+          We will never use this information to contact you. It is only provided
+          to matches with your permission for them to contact you.
+          <br />
+          <br />
+          Note: Sisters are expected to fear Allah (ﷻ) and only provide the
+          contact information of their <i>wali</i> (guardian) with his
+          permission.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <FormField
@@ -54,11 +62,12 @@ export default function ContactForm() {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input type="email" placeholder="Enter email" {...field} />
+                  <Input type="email" placeholder="Please enter" required {...field} />
                 </FormControl>
                 <FormMessage />
                 <FormDescription>
-                  This is not your account email, it is only for matches to reach you at.
+                  This is not your account email, it is only for matches to
+                  reach you at.
                 </FormDescription>
               </FormItem>
             )}
@@ -70,7 +79,7 @@ export default function ContactForm() {
               <FormItem>
                 <FormLabel>Phone</FormLabel>
                 <FormControl>
-                  <PhoneInput defaultCountry="US" {...field} />
+                  <PhoneInput defaultCountry="US" placeholder="Please enter" required {...field} />
                 </FormControl>
                 <FormMessage />
                 <FormDescription>
@@ -80,8 +89,10 @@ export default function ContactForm() {
             )}
           />
         </div>
-        <Button type="submit" className="w-fit self-end">Save</Button>
+        <Button type="submit" className="w-fit self-end">
+          Save
+        </Button>
       </form>
     </Form>
-  )
+  );
 }

@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { Button } from "@/components/ui/button"
-import { Textarea } from "@/components/ui/textarea"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Form,
   FormControl,
@@ -13,66 +13,51 @@ import {
   FormLabel,
   FormMessage,
   FormDescription,
-} from "@/components/ui/form"
+} from "@/components/ui/form";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "@/components/ui/select";
+import { aqeedah, madhab } from "@/data/form-data";
 
 // Form Schema
 const formSchema: z.Schema = z.object({
-  aqeedah: z.string({ required_error: "Aqeedah is required" }),
-  madhab: z.string({ required_error: "Madhab is required" }),
-  practice: z.string({ required_error: "Practice is required" })
+  aqeedah: z.string(),
+  madhab: z.string(),
+  practice: z
+    .string()
     .max(1000, { message: "Must be at most 1000 characters long" }),
-  knowledge: z.string({ required_error: "Knowledge is required" })
+  knowledge: z
+    .string()
     .max(1000, { message: "Must be at most 1000 characters long" }),
-})
-
-const aqeedah = [
-  "Sunni",
-  "Salafi",
-  "Shia",
-  "Sufi",
-  "Deobandi",
-  "Barelvi",
-  "Qadiani",
-  "Ashari",
-  "Other",
-]
-
-const madhab = [
-  "Hanafi",
-  "Maliki",
-  "Shafi'i",
-  "Hanbali",
-  "No Madhab",
-  "Other",
-]
+});
 
 export default function ReligionForm() {
   // Form Definition
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      aqeedah: "Sunni",
-      madhab: "Hanafi",
-      practice: "Not specified",
-      knowledge: "Not specified",
+      aqeedah: "",
+      madhab: "",
+      practice: "",
+      knowledge: "",
     },
-  })
+  });
 
   // Submit
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
+    console.log(values);
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="container flex flex-col gap-4">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="container flex flex-col gap-4"
+      >
         <div className="flex flex-wrap gap-4">
           <FormField
             control={form.control}
@@ -80,7 +65,7 @@ export default function ReligionForm() {
             render={({ field }) => (
               <FormItem className="flex-grow">
                 <FormLabel>Aqeedah</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <Select onValueChange={field.onChange} required>
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Please select" />
@@ -107,7 +92,7 @@ export default function ReligionForm() {
             render={({ field }) => (
               <FormItem className="flex-grow">
                 <FormLabel>Madhab</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <Select onValueChange={field.onChange} required>
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Please select" />
@@ -122,9 +107,7 @@ export default function ReligionForm() {
                   </SelectContent>
                 </Select>
                 <FormMessage />
-                <FormDescription>
-                  Your school of jurisprudence.
-                </FormDescription>
+                <FormDescription>Your school of jurisprudence.</FormDescription>
               </FormItem>
             )}
           />
@@ -139,6 +122,7 @@ export default function ReligionForm() {
                 <Textarea
                   placeholder="Describe your practice of the religion."
                   className="min-h-32 resize-y max-h-64"
+                  required
                   {...field}
                 />
               </FormControl>
@@ -156,6 +140,7 @@ export default function ReligionForm() {
                 <Textarea
                   placeholder="Describe your knowledge of the religion."
                   className="min-h-32 resize-y max-h-64"
+                  required
                   {...field}
                 />
               </FormControl>
@@ -163,8 +148,10 @@ export default function ReligionForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-fit self-end">Save</Button>
+        <Button type="submit" className="w-fit self-end">
+          Save
+        </Button>
       </form>
     </Form>
-  )
+  );
 }

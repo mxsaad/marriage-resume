@@ -46,13 +46,14 @@ PhoneInputSimple.displayName = "PhoneInputSimple";
 
 type PhoneInputProps = React.ComponentProps<typeof RPNInput.default>;
 
-const PhoneInput = ({ className, children, ...props }: PhoneInputProps) => (
+const PhoneInput = ({ className, children, required, ...props }: PhoneInputProps) => (
   <RPNInput.default
     className={cn("flex", className)}
     placeholder={"Enter a phone number"}
     flagComponent={FlagComponent}
     countrySelectComponent={CountrySelect}
     inputComponent={InputComponent}
+    required={required}
     {...props}
   />
 );
@@ -60,10 +61,11 @@ const PhoneInput = ({ className, children, ...props }: PhoneInputProps) => (
 PhoneInput.displayName = "PhoneInput";
 
 const InputComponent = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, ...props }, ref) => (
+  ({ className, required, ...props }, ref) => (
     <Input
       className={cn("rounded-s-none rounded-e-lg", className)}
       {...props}
+      required={required}
       ref={ref}
     />
   ),

@@ -1,12 +1,12 @@
-"use client"
+"use client";
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useFieldArray, useForm } from "react-hook-form"
-import { z } from "zod"
-import { useEffect } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "../ui/input"
-import { Badge } from "../ui/badge"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useFieldArray, useForm } from "react-hook-form";
+import { z } from "zod";
+import { useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "../ui/input";
+import { Badge } from "../ui/badge";
 import {
   Form,
   FormControl,
@@ -15,33 +15,34 @@ import {
   FormLabel,
   FormMessage,
   FormDescription,
-} from "@/components/ui/form"
+} from "@/components/ui/form";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
+} from "@/components/ui/popover";
 import {
   Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
-} from "@/components/ui/command"
-import { CaretSortIcon, CheckIcon, Cross2Icon } from "@radix-ui/react-icons"
-import { cn } from "@/lib/utils"
+} from "@/components/ui/command";
+import { CaretSortIcon, CheckIcon, Cross2Icon } from "@radix-ui/react-icons";
+import { cn } from "@/lib/utils";
 
 // Form Schema
 const formSchema: z.Schema = z.object({
-  qualities: z.array(z.string()
-    .refine((val) => val.trim().length > 0, { message: "Goal is required" }))
+  qualities: z
+    .array(z.string())
     .max(5, { message: "You can only have at most 5 goals" }),
-  dealBreakers: z.array(z.string()
-    .refine((val) => val.trim().length > 0, { message: "Goal is required" }))
+  dealBreakers: z
+    .array(z.string())
     .max(5, { message: "You can only have at most 5 goals" }),
-  tags: z.array(z.string())
+  tags: z
+    .set(z.string())
     .max(5, { message: "You can only have at most 5 tags" }),
-})
+});
 
 const tags = [
   "Romantic",
@@ -52,90 +53,109 @@ const tags = [
   "Introvert",
   "Extrovert",
   "Adventurous",
-]
+];
 
 export default function SpouseForm() {
   // Form Definition
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      tags: [],
+      tags: new Set<string>(),
       qualities: [],
       dealBreakers: [],
     },
-  })
+  });
 
   // Short-Term Goals
   const {
     fields: qualitiesFields,
     append: qualitiesAppend,
-    remove: qualitiesRemove
+    remove: qualitiesRemove,
   } = useFieldArray({
     control: form.control,
     name: "qualities",
-  })
+  });
 
   // Long-Term Goals
   const {
     fields: dealBreakersFields,
     append: dealBreakersAppend,
-    remove: dealBreakersRemove
+    remove: dealBreakersRemove,
   } = useFieldArray({
     control: form.control,
     name: "dealBreakers",
-  })
+  });
 
   // Submit
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
+    console.log(values);
   }
 
   useEffect(() => {
-    qualitiesAppend("")
-    dealBreakersAppend("")
-  }, [])
+    qualitiesAppend("");
+    dealBreakersAppend("");
+  }, []);
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="container flex flex-col gap-4">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="container flex flex-col gap-4"
+      >
         <FormField
           control={form.control}
           name="tags"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Spouse's Tags</FormLabel>
+              <FormLabel>Tags</FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
                   <FormControl>
-                    <Button variant="outline" role="combobox" className={cn(
-                      "w-full justify-start h-fit gap-2",
-                      !field.value && "text-muted-foreground"
-                    )}>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      className="w-full justify-start h-fit gap-2 font-normal"
+                    >
                       <CaretSortIcon className="h-4 w-4 shrink-0 opacity-50" />
                       <span className="flex flex-wrap-reverse gap-2">
-                        {field.value.map((value: string, index: number) => (
-                          <Badge key={index}>{value}</Badge>
-                        ))}
+                        {field.value.size
+                          ? Array.from(field.value).map((tag, index) => (
+                              <Badge key={index}>{tag as string}</Badge>
+                            ))
+                          : "Please select"}
                       </span>
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
                 <PopoverContent className="w-fit p-0">
                   <Command>
-                    <CommandInput placeholder="Search tags..." className="h-9" />
+                    <CommandInput
+                      placeholder="Search tags..."
+                      className="h-9"
+                    />
                     <CommandEmpty>No tags found.</CommandEmpty>
                     <CommandGroup>
-                      {tags.map((value, index) => (
+                      {tags.map((tag: string, index: number) => (
                         <CommandItem
                           key={index}
+                          value={tag}
                           onSelect={() => {
-                            if (field.value.includes(value))
-                              form.setValue("tags", field.value.filter((tag: string) => tag !== value))
-                            else if (field.value.length < 5)
-                              form.setValue("tags", [...field.value, value])
-                          }}>
-                          {value}
-                          <CheckIcon className={cn("ml-auto h-4 w-4", field.value.includes(value) ? "opacity-100" : "opacity-0")} />
+                            if (field.value.has(tag)) {
+                              field.value.delete(tag);
+                              form.setValue("tags", field.value);
+                            } else if (field.value.size < 5)
+                              form.setValue("tags", field.value.add(tag));
+                          }}
+                        >
+                          {tag}
+                          <CheckIcon
+                            className={cn(
+                              "ml-auto h-4 w-4",
+                              field.value.has(tag)
+                                ? "opacity-100"
+                                : "opacity-0",
+                            )}
+                          />
                         </CommandItem>
                       ))}
                     </CommandGroup>
@@ -143,9 +163,7 @@ export default function SpouseForm() {
                 </PopoverContent>
               </Popover>
               <FormMessage />
-              <FormDescription>
-                Select up to 5 tags.
-              </FormDescription>
+              <FormDescription>Select up to 5 tags.</FormDescription>
             </FormItem>
           )}
         />
@@ -166,12 +184,22 @@ export default function SpouseForm() {
                     </FormDescription>
                     <FormControl>
                       <div className="flex w-full items-center gap-1">
-                        <Input type="text" placeholder="Enter quality" {...field} />
-                        {index !== 0 &&
-                          <Button type="button" variant="outline" size="icon" onClick={() => qualitiesRemove(index)}>
+                        <Input
+                          type="text"
+                          placeholder="Please enter"
+                          required
+                          {...field}
+                        />
+                        {index !== 0 && (
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="icon"
+                            onClick={() => qualitiesRemove(index)}
+                          >
                             <Cross2Icon />
                           </Button>
-                        }
+                        )}
                       </div>
                     </FormControl>
                     <FormMessage />
@@ -179,7 +207,13 @@ export default function SpouseForm() {
                 )}
               />
             ))}
-            <Button type="button" variant="secondary" size="sm" className="mt-2" onClick={() => qualitiesAppend("")}>
+            <Button
+              type="button"
+              variant="secondary"
+              size="sm"
+              className="mt-2"
+              onClick={() => qualitiesAppend("")}
+            >
               Add Quality
             </Button>
           </div>
@@ -199,12 +233,22 @@ export default function SpouseForm() {
                     </FormDescription>
                     <FormControl>
                       <div className="flex w-full items-center gap-1">
-                        <Input type="text" placeholder="Enter deal-breaker" {...field} />
-                        {index !== 0 &&
-                          <Button type="button" variant="outline" size="icon" onClick={() => dealBreakersRemove(index)}>
+                        <Input
+                          type="text"
+                          placeholder="Please enter"
+                          required
+                          {...field}
+                        />
+                        {index !== 0 && (
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="icon"
+                            onClick={() => dealBreakersRemove(index)}
+                          >
                             <Cross2Icon />
                           </Button>
-                        }
+                        )}
                       </div>
                     </FormControl>
                     <FormMessage />
@@ -212,13 +256,21 @@ export default function SpouseForm() {
                 )}
               />
             ))}
-            <Button type="button" variant="secondary" size="sm" className="mt-2" onClick={() => dealBreakersAppend("")}>
+            <Button
+              type="button"
+              variant="secondary"
+              size="sm"
+              className="mt-2"
+              onClick={() => dealBreakersAppend("")}
+            >
               Add Deal-Breaker
             </Button>
           </div>
         </div>
-        <Button type="submit" className="w-fit self-end">Save</Button>
+        <Button type="submit" className="w-fit self-end">
+          Save
+        </Button>
       </form>
     </Form>
-  )
+  );
 }

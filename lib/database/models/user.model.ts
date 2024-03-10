@@ -12,46 +12,44 @@ const UserSchema = new Schema({
     state: { type: String, required: true },
   },
   status: { type: String, required: true },
-  bio: { type: String },
+  bio: { type: String, required: true },
   highlights: { type: [String] },
 
   religion: {
-    aqeedah: { type: String, required: true, default: 'Sunni' },
-    madhab: { type: String, required: true, default: 'Hanafi' },
-    practice: { type: String },
-    knowledge: { type: String },
+    aqeedah: { type: String, required: true },
+    madhab: { type: String, required: true },
+    practice: { type: String, required: true },
+    knowledge: { type: String, required: true },
   },
 
   appearance: {
-    height: { type: String, required: true, default: '5\'8' },
-    weight: { type: String, required: true, default: '150' },
-    complexion: { type: String, required: true, default: 'Fair' },
-    build: { type: String, required: true, default: 'Average' },
-    dress: { type: String },
-    grooming: { type: String },
-    other: { type: String },
+    height: { type: String, required: true },
+    weight: { type: String, required: true },
+    complexion: { type: String, required: true },
+    build: { type: String, required: true },
+    description: { type: String, required: true },
   },
   
   occupation: {
     tags: { type: [String] },
-    description: { type: String },
+    description: { type: String, required: true },
   },
 
   goals: {
-    shortTerm: { type: [String] },
-    longTerm: { type: [String] },
+    shortTerm: { type: [String], required: true },
+    longTerm: { type: [String], required: true },
   },
 
   family: {
-    countries: { type: [String] },
-    languages: { type: [String] },
-    description: { type: String },
+    countries: { type: [String], required: true },
+    languages: { type: [String], required: true },
+    description: { type: String, required: true },
   },
 
   spouse: {
     tags: { type: [String] },
-    qualities: { type: [String] },
-    dealBreakers: { type: [String] },
+    qualities: { type: [String], required: true},
+    dealBreakers: { type: [String], required: true },
   },
 
   contact: {
