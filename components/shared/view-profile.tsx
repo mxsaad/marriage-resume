@@ -1,4 +1,3 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "../ui/separator"
 import {
@@ -13,10 +12,6 @@ export default function ViewProfile() {
     <div className="flex flex-col items-center text-left gap-4">
       {/* Bio */}
       <div className="w-full flex flex-col sm:flex-row items-center justify-center gap-4 p-4">
-        <Avatar className="w-32 h-32">
-          <AvatarImage src="https://images.squarespace-cdn.com/content/v1/5616ac17e4b018d366f57f53/bc84bfd0-39fa-47df-b0af-b5fb86612b01/has+logo.png" alt="Profile Picture" />
-          <AvatarFallback>CN</AvatarFallback>
-        </Avatar>
         <div className="flex flex-col">
           <h1 className="text-wrap scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
             Full Name

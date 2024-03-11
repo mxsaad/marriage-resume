@@ -8,15 +8,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/ui/avatar"
-import {
-  AvatarIcon,
   GearIcon,
   PersonIcon,
-  ExitIcon
+  ExitIcon,
+  HamburgerMenuIcon
 } from "@radix-ui/react-icons"
 import { SignOutButton, currentUser } from "@clerk/nextjs"
 import Link from "next/link"
@@ -28,12 +23,7 @@ export default async function UserDropdown() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon">
-          <Avatar className="h-7 w-7">
-            <AvatarImage src={user?.imageUrl} alt="User profile image" />
-            <AvatarFallback>
-              <AvatarIcon />
-            </AvatarFallback>
-          </Avatar>
+          <HamburgerMenuIcon className="h-[1.2rem] w-[1.2rem]"/>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
@@ -45,7 +35,7 @@ export default async function UserDropdown() {
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem>
-          <Link href={`/@${user?.username}`} className="flex gap-2 items-center justify-center">
+          <Link href="/profile" className="flex gap-2 items-center justify-center">
             <PersonIcon /> Profile
           </Link>
         </DropdownMenuItem>
