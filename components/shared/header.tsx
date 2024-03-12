@@ -9,7 +9,7 @@ const Header = () => {
   return (
     <header className="fixed bg-background/95 z-10 self-center w-screen rounded-b-md border-b-2 flex items-center justify-between gap-2 py-2">
       <Link href="/" className="flex gap-2 items-center justify-center pl-4">
-        <Image src="/favicon.png" alt="Marriage Resume" width={24} height={24} />
+        <Image src="/favicon.png" alt="MarriageResume" width={24} height={24} />
         <p className="font-bold tracking-tight">MarriageResume</p>
       </Link>
       <div className="flex items-center justify-center gap-2 pr-4">
