@@ -1,63 +1,63 @@
-import { Schema, model, models } from 'mongoose';
+import { Schema, model, models } from "mongoose";
 
 const UserSchema = new Schema({
   clerkId: { type: String, required: true, unique: true },
   emailAdress: { type: String, required: true, unique: true },
   username: { type: String, required: true, unique: true },
-  name: { type: String, required: true },
-  dob: { type: Date, required: true },
-  gender: { type: String, required: true },
+  name: { type: String },
+  dob: { type: Date },
+  gender: { type: String },
   location: {
-    country: { type: String, required: true },
-    state: { type: String, required: true },
+    country: { type: String },
+    state: { type: String },
   },
-  status: { type: String, required: true },
-  bio: { type: String, required: true },
+  status: { type: String },
+  bio: { type: String },
   highlights: { type: [String] },
 
   religion: {
-    aqeedah: { type: String, required: true },
-    madhab: { type: String, required: true },
-    practice: { type: String, required: true },
-    knowledge: { type: String, required: true },
+    aqeedah: { type: String },
+    madhab: { type: String },
+    practice: { type: String },
+    knowledge: { type: String },
   },
 
   appearance: {
-    height: { type: String, required: true },
-    weight: { type: String, required: true },
-    complexion: { type: String, required: true },
-    build: { type: String, required: true },
-    description: { type: String, required: true },
+    height: { type: String },
+    weight: { type: String },
+    complexion: { type: String },
+    build: { type: String },
+    description: { type: String },
   },
-  
+
   occupation: {
     tags: { type: [String] },
-    description: { type: String, required: true },
+    description: { type: String },
   },
 
   goals: {
-    shortTerm: { type: [String], required: true },
-    longTerm: { type: [String], required: true },
+    shortTerm: { type: [String] },
+    longTerm: { type: [String] },
   },
 
   family: {
-    countries: { type: [String], required: true },
-    languages: { type: [String], required: true },
-    description: { type: String, required: true },
+    countries: { type: [String] },
+    languages: { type: [String] },
+    description: { type: String },
   },
 
   spouse: {
     tags: { type: [String] },
-    qualities: { type: [String], required: true},
-    dealBreakers: { type: [String], required: true },
+    qualities: { type: [String] },
+    dealBreakers: { type: [String] },
   },
 
   contact: {
-    email: { type: String, required: true },
-    phone: { type: String, required: true },
+    email: { type: String },
+    phone: { type: String },
   },
 });
 
-const User = models.User || model('User', UserSchema);
+const User = models.User || model("User", UserSchema);
 
 export default User;

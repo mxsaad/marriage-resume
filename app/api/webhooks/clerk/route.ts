@@ -1,6 +1,8 @@
 import { Webhook } from "svix";
 import { headers } from "next/headers";
 import { WebhookEvent } from "@clerk/nextjs/server";
+import { clerkClient } from "@clerk/nextjs";
+import { createUser, getUserById, updateUser, deleteUser } from "@/lib/actions/user.actions";
 
 export async function POST(req: Request) {
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the webhook
@@ -48,12 +50,34 @@ export async function POST(req: Request) {
     });
   }
 
-  // Get the ID and type
-  const { id } = evt.data;
-  const eventType = evt.type;
+  // Handle the WebhookEvent
+  switch (evt.type) {
+    case "user.created":
+      const newUser = await createUser({
+        clerkId: evt.data.id,
+        email: evt.data.email_addresses[0].email_address,
+        username: evt.data.username as string,
+      });
+      if (newUser) {
+        await clerkClient.users.updateUserMetadata(evt.data.id, {
+          publicMetadata: {
+            userId: newUser._id,
+          },
+        });
+      }
+      break;
 
-  console.log(`Webhook with and ID of ${id} and type of ${eventType}`);
-  console.log("Webhook body:", body);
+    case "user.updated":
+      await updateUser(evt.data.id, {
+        email: evt.data.email_addresses[0].email_address,
+        username: evt.data.username as string,
+      });
+      break;
 
-  return new Response("", { status: 200 });
+    case "user.deleted":
+      await deleteUser(evt.data.id as string);
+      break;
+  }
+
+  return new Response("OK", { status: 200 });
 }
