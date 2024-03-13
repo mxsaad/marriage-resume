@@ -21,7 +21,7 @@ export const connectToDatabase = async () => {
   }
 
   if (!cached.promise) {
-    cached.promise = mongoose.connect(process.env.MONGODB_URI as string, {
+    cached.promise = mongoose.connect(process.env.MONGODB_URL, {
       dbName: 'marriage-resume',
       bufferCommands: false,
     });
