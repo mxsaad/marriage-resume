@@ -3,27 +3,36 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion"
-import SummaryForm from "../forms/summary-form"
-import ReligionForm from "../forms/religion-form"
-import AppearanceForm from "../forms/appearance-form"
-import OccupationForm from "../forms/occupation-form"
-import FamilyForm from "../forms/family-form"
-import GoalsForm from "../forms/goals-form"
-import SpouseForm from "../forms/spouse-form"
-import ContactForm from "../forms/contact-form"
+} from "@/components/ui/accordion";
+import SummaryForm from "../forms/summary-form";
+import ReligionForm from "../forms/religion-form";
+import AppearanceForm from "../forms/appearance-form";
+import OccupationForm from "../forms/occupation-form";
+import FamilyForm from "../forms/family-form";
+import GoalsForm from "../forms/goals-form";
+import SpouseForm from "../forms/spouse-form";
+import ContactForm from "../forms/contact-form";
+import { auth } from "@clerk/nextjs";
 
 export default function EditProfile() {
+  const { sessionClaims } = auth();
+  const clerkId = sessionClaims?.id as string;
+
   return (
     <div className="flex flex-col items-center text-left gap-4">
-      <Accordion type="single" collapsible defaultValue="summary" className="w-full">
+      <Accordion
+        type="single"
+        collapsible
+        defaultValue="summary"
+        className="w-full"
+      >
         {/* Summary */}
         <AccordionItem value="summary">
           <AccordionTrigger className="text-xl font-bold">
             Summary
           </AccordionTrigger>
           <AccordionContent>
-            <SummaryForm />
+            <SummaryForm clerkId={clerkId} />
           </AccordionContent>
         </AccordionItem>
         {/* Religion */}
@@ -32,7 +41,7 @@ export default function EditProfile() {
             Religion
           </AccordionTrigger>
           <AccordionContent>
-            <ReligionForm />
+            <ReligionForm clerkId={clerkId} />
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="appearance">
@@ -40,7 +49,7 @@ export default function EditProfile() {
             Appearance
           </AccordionTrigger>
           <AccordionContent>
-            <AppearanceForm />
+            <AppearanceForm clerkId={clerkId} />
           </AccordionContent>
         </AccordionItem>
         {/* Occupation */}
@@ -49,7 +58,7 @@ export default function EditProfile() {
             Occupation
           </AccordionTrigger>
           <AccordionContent>
-            <OccupationForm />
+            <OccupationForm clerkId={clerkId} />
           </AccordionContent>
         </AccordionItem>
         {/* Goals */}
@@ -58,7 +67,7 @@ export default function EditProfile() {
             Goals
           </AccordionTrigger>
           <AccordionContent>
-            <GoalsForm />
+            <GoalsForm clerkId={clerkId} />
           </AccordionContent>
         </AccordionItem>
         {/* Family */}
@@ -67,7 +76,7 @@ export default function EditProfile() {
             Family
           </AccordionTrigger>
           <AccordionContent>
-            <FamilyForm />
+            <FamilyForm clerkId={clerkId} />
           </AccordionContent>
         </AccordionItem>
         {/* My Ideal Spouse */}
@@ -76,7 +85,7 @@ export default function EditProfile() {
             My Ideal Spouse
           </AccordionTrigger>
           <AccordionContent>
-            <SpouseForm />
+            <SpouseForm clerkId={clerkId} />
           </AccordionContent>
         </AccordionItem>
         {/* Contact Information */}
@@ -85,10 +94,10 @@ export default function EditProfile() {
             Contact Information
           </AccordionTrigger>
           <AccordionContent>
-            <ContactForm />
+            <ContactForm clerkId={clerkId} />
           </AccordionContent>
         </AccordionItem>
       </Accordion>
     </div>
-  )
+  );
 }

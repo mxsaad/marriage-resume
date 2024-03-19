@@ -22,21 +22,17 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { aqeedah, madhab } from "@/data/form-data";
+import { updateUser } from "@/lib/actions/user.actions";
 
 // Form Schema
 const formSchema: z.Schema = z.object({
   aqeedah: z.string(),
   madhab: z.string(),
-  practice: z
-    .string()
-    .max(1000, { message: "Must be at most 1000 characters long" }),
-  knowledge: z
-    .string()
-    .max(1000, { message: "Must be at most 1000 characters long" }),
+  practice: z.string(),
+  knowledge: z.string(),
 });
 
-export default function ReligionForm() {
-  // Form Definition
+export default function ReligionForm({ clerkId }: { clerkId: string }) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -47,15 +43,14 @@ export default function ReligionForm() {
     },
   });
 
-  // Submit
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function handleSubmit(values: z.infer<typeof formSchema>) {
+    await updateUser(clerkId, { religion: values });
   }
 
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={form.handleSubmit(handleSubmit)}
         className="container flex flex-col gap-4"
       >
         <div className="flex flex-wrap gap-4">
@@ -122,6 +117,7 @@ export default function ReligionForm() {
                 <Textarea
                   placeholder="Describe your practice of the religion."
                   className="min-h-32 resize-y max-h-64"
+                  maxLength={1000}
                   required
                   {...field}
                 />
@@ -140,6 +136,7 @@ export default function ReligionForm() {
                 <Textarea
                   placeholder="Describe your knowledge of the religion."
                   className="min-h-32 resize-y max-h-64"
+                  maxLength={1000}
                   required
                   {...field}
                 />

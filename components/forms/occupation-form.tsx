@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { Button } from "@/components/ui/button"
-import { Textarea } from "@/components/ui/textarea"
-import { Badge } from "../ui/badge"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Badge } from "../ui/badge";
 import {
   Form,
   FormControl,
@@ -14,29 +14,28 @@ import {
   FormLabel,
   FormMessage,
   FormDescription,
-} from "@/components/ui/form"
+} from "@/components/ui/form";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
+} from "@/components/ui/popover";
 import {
   Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
-} from "@/components/ui/command"
-import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons"
-import { cn } from "@/lib/utils"
+} from "@/components/ui/command";
+import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
+import { cn } from "@/lib/utils";
+import { updateUser } from "@/lib/actions/user.actions";
 
 // Form Schema
 const formSchema: z.Schema = z.object({
-  tags: z.set(z.string())
-    .max(3, { message: "You can only have at most 3 tags" }),
-  description: z.string()
-    .max(1000, { message: "Must be at most 1000 characters long" })
-})
+  tags: z.set(z.string()),
+  description: z.string(),
+});
 
 const tags = [
   "Student",
@@ -46,26 +45,28 @@ const tags = [
   "Entreprenuer",
   "Millionaire",
   "Billionaire",
-]
+];
 
-export default function OccupationForm() {
-  // Form Definition
+export default function OccupationForm({ clerkId }: { clerkId: string }) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       tags: new Set<string>(),
       description: "",
     },
-  })
+  });
 
-  // Submit
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
+  async function handleSubmit(values: z.infer<typeof formSchema>) {
+    values.tags = Array.from(values.tags);
+    await updateUser(clerkId, { occupation: values });
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="container flex flex-col gap-4">
+      <form
+        onSubmit={form.handleSubmit(handleSubmit)}
+        className="container flex flex-col gap-4"
+      >
         <FormField
           control={form.control}
           name="tags"
@@ -108,10 +109,7 @@ export default function OccupationForm() {
                               field.value.delete(tag);
                               form.setValue("tags", field.value);
                             } else if (field.value.size < 3)
-                              form.setValue(
-                                "tags",
-                                field.value.add(tag),
-                              );
+                              form.setValue("tags", field.value.add(tag));
                           }}
                         >
                           {tag}
@@ -144,6 +142,7 @@ export default function OccupationForm() {
                 <Textarea
                   placeholder="Describe what you do for a living."
                   className="min-h-32 resize-y max-h-64"
+                  maxLength={1000}
                   required
                   {...field}
                 />
@@ -152,8 +151,10 @@ export default function OccupationForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-fit self-end">Save</Button>
+        <Button type="submit" className="w-fit self-end">
+          Save
+        </Button>
       </form>
     </Form>
-  )
+  );
 }

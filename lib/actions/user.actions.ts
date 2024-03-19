@@ -1,51 +1,45 @@
-"use server"
+"use server";
 
-import { connectToDatabase } from "@/lib/database";
-import User from "@/lib/database/models/user.model";
+import connectToDatabase from "@/lib/mongodb";
+import { CreateUserParams, UpdateUserParams } from "@/types";
 import { revalidatePath } from "next/cache";
 
-export async function createUser(user: { clerkId: string; email: string; username: string }) {
+export async function createUser(user: CreateUserParams) {
   try {
-    await connectToDatabase();
-    const newUser = await User.create(user);
-    return JSON.parse(JSON.stringify(newUser));
+    const { database } = await connectToDatabase();
+    const users = database.collection("users");
+    const newUser = await users.insertOne({
+      ...user,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+    return newUser;
   } catch (error) {
     console.error("Error creating user:", error);
   }
 }
 
-export async function getUserById(userId: string) {
+export async function updateUser(clerkId: string, user: UpdateUserParams) {
   try {
-    await connectToDatabase();
-    const user = await User.findById(userId);
-    if (!user)
-      throw new Error("User not found");
-    return JSON.parse(JSON.stringify(user));
+    const { database } = await connectToDatabase();
+    const users = database.collection("users");
+    const updatedUser = await users.updateOne(
+      { clerkId },
+      { $set: { ...user, updatedAt: new Date() } },
+    );
+    return updatedUser;
   } catch (error) {
-    console.error("Error getting user by id:", error);
-  }
-}
-
-export async function updateUser(clerkId: string, user: { email: string; username: string }) {
-  try {
-    await connectToDatabase();
-    const updatedUser = await User.findOneAndUpdate({ clerkId }, user, { new: true });
-    if (!updatedUser)
-      throw new Error("User update failed");
-    return JSON.parse(JSON.stringify(updatedUser));
-  } catch (error) {
-    console.error("Error updating user by id:", error);
+    console.error("Error updating user:", error);
   }
 }
 
 export async function deleteUser(clerkId: string) {
   try {
-    await connectToDatabase();
-    const deletedUser = await User.findOneAndDelete({ clerkId });
-    if (!deletedUser)
-      throw new Error("User delete failed");
+    const { database } = await connectToDatabase();
+    const users = database.collection("users");
+    const deletedUser = await users.deleteOne({ clerkId });
     revalidatePath("/");
-    return JSON.parse(JSON.stringify(deletedUser));
+    return deletedUser;
   } catch (error) {
     console.error("Error deleting user:", error);
   }

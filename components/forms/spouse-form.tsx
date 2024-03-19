@@ -30,18 +30,13 @@ import {
 } from "@/components/ui/command";
 import { CaretSortIcon, CheckIcon, Cross2Icon } from "@radix-ui/react-icons";
 import { cn } from "@/lib/utils";
+import { updateUser } from "@/lib/actions/user.actions";
 
 // Form Schema
 const formSchema: z.Schema = z.object({
-  qualities: z
-    .array(z.string())
-    .max(5, { message: "You can only have at most 5 goals" }),
-  dealBreakers: z
-    .array(z.string())
-    .max(5, { message: "You can only have at most 5 goals" }),
-  tags: z
-    .set(z.string())
-    .max(5, { message: "You can only have at most 5 tags" }),
+  qualities: z.array(z.string()),
+  dealBreakers: z.array(z.string()),
+  tags: z.set(z.string()),
 });
 
 const tags = [
@@ -55,8 +50,7 @@ const tags = [
   "Adventurous",
 ];
 
-export default function SpouseForm() {
-  // Form Definition
+export default function SpouseForm({ clerkId }: { clerkId: string }) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -66,7 +60,6 @@ export default function SpouseForm() {
     },
   });
 
-  // Short-Term Goals
   const {
     fields: qualitiesFields,
     append: qualitiesAppend,
@@ -76,7 +69,6 @@ export default function SpouseForm() {
     name: "qualities",
   });
 
-  // Long-Term Goals
   const {
     fields: dealBreakersFields,
     append: dealBreakersAppend,
@@ -86,9 +78,9 @@ export default function SpouseForm() {
     name: "dealBreakers",
   });
 
-  // Submit
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function handleSubmit(values: z.infer<typeof formSchema>) {
+    values.tags = Array.from(values.tags);
+    await updateUser(clerkId, { spouse: values });
   }
 
   useEffect(() => {
@@ -99,7 +91,7 @@ export default function SpouseForm() {
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={form.handleSubmit(handleSubmit)}
         className="container flex flex-col gap-4"
       >
         <FormField
@@ -213,6 +205,7 @@ export default function SpouseForm() {
               size="sm"
               className="mt-2"
               onClick={() => qualitiesAppend("")}
+              disabled={qualitiesFields.length === 5}
             >
               Add Quality
             </Button>
@@ -262,6 +255,7 @@ export default function SpouseForm() {
               size="sm"
               className="mt-2"
               onClick={() => dealBreakersAppend("")}
+              disabled={dealBreakersFields.length === 5}
             >
               Add Deal-Breaker
             </Button>

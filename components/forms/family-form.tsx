@@ -31,24 +31,16 @@ import { cn } from "@/lib/utils";
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 import locationsData from "@/data/locations.json";
 import languagesData from "@/data/languages.json";
+import { updateUser } from "@/lib/actions/user.actions";
 
 // Form Schema
 const formSchema: z.Schema = z.object({
-  countries: z
-    .set(z.string())
-    .min(1, { message: "You must have at least 1 country" })
-    .max(5, { message: "You can only have at most 5 countries" }),
-  languages: z
-    .set(z.string())
-    .min(1, { message: "You must have at least 1 language" })
-    .max(5, { message: "You can only have at most 5 languages" }),
-  description: z
-    .string()
-    .max(1000, { message: "Must be at most 1000 characters long" }),
+  countries: z.set(z.string()),
+  languages: z.set(z.string()),
+  description: z.string(),
 });
 
-export default function FamilyForm() {
-  // Form Definition
+export default function FamilyForm({ clerkId }: { clerkId: string }) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -58,15 +50,16 @@ export default function FamilyForm() {
     },
   });
 
-  // Submit
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function handleSubmit(values: z.infer<typeof formSchema>) {
+    values.countries = Array.from(values.countries);
+    values.languages = Array.from(values.languages);
+    await updateUser(clerkId, { family: values });
   }
 
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={form.handleSubmit(handleSubmit)}
         className="container flex flex-col gap-4"
       >
         <FormField
@@ -215,6 +208,7 @@ export default function FamilyForm() {
                 <Textarea
                   placeholder="Describe your family's background and situation."
                   className="min-h-32 resize-y max-h-64"
+                  maxLength={1000}
                   required
                   {...field}
                 />

@@ -16,8 +16,8 @@ import {
 } from "@/components/ui/form";
 import { PhoneInput } from "@/components/ui/phone-input";
 import { isValidPhoneNumber } from "react-phone-number-input";
+import { updateUser } from "@/lib/actions/user.actions";
 
-// Form Schema
 const formSchema: z.Schema = z.object({
   email: z.string().email(),
   phone: z
@@ -25,8 +25,7 @@ const formSchema: z.Schema = z.object({
     .refine(isValidPhoneNumber, { message: "Invalid phone number" }),
 });
 
-export default function ContactForm() {
-  // Form Definition
+export default function ContactForm({ clerkId }: { clerkId: string }) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -35,14 +34,13 @@ export default function ContactForm() {
     },
   });
 
-  // Submit
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function handleSubmit(values: z.infer<typeof formSchema>) {
+    await updateUser(clerkId, { contact: values });
   }
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={form.handleSubmit(handleSubmit)}
         className="container flex flex-col gap-4"
       >
         <p className="text-muted-foreground">
@@ -62,7 +60,12 @@ export default function ContactForm() {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input type="email" placeholder="Please enter" required {...field} />
+                  <Input
+                    type="email"
+                    placeholder="Please enter"
+                    required
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
                 <FormDescription>
@@ -79,7 +82,12 @@ export default function ContactForm() {
               <FormItem>
                 <FormLabel>Phone</FormLabel>
                 <FormControl>
-                  <PhoneInput defaultCountry="US" placeholder="Please enter" required {...field} />
+                  <PhoneInput
+                    defaultCountry="US"
+                    placeholder="Please enter"
+                    required
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
                 <FormDescription>

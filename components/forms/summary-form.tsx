@@ -39,13 +39,12 @@ import {
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 import locations from "@/data/locations.json";
 import { useEffect, useState } from "react";
+import { updateUser } from "@/lib/actions/user.actions";
 
 // Form Schema
 const formSchema: z.Schema = z.object({
   name: z.string().max(32, { message: "Must be at most 32 characters long" }),
-  highlights: z
-    .set(z.string())
-    .max(3, { message: "You can only have up to 3 highlights" }),
+  highlights: z.set(z.string()),
   dob: z.string({ required_error: "Date of Birth is required" }).pipe(
     z.coerce.date().max(new Date(Date.now() - 18 * 365 * 24 * 60 * 60 * 1000), {
       message: "Must be at least 18 years old",
@@ -57,7 +56,7 @@ const formSchema: z.Schema = z.object({
     state: z.string(),
     country: z.string(),
   }),
-  bio: z.string().max(256, { message: "Must be at most 256 characters long" }),
+  bio: z.string(),
 });
 
 // Tags
@@ -77,11 +76,9 @@ const highlights = [
   "Widowed",
 ];
 
-export default function SummaryForm() {
-  const [country, setCountry] = useState();
+export default function SummaryForm({ clerkId }: { clerkId: string }) {
   const [states, setStates] = useState([]);
 
-  // Form Definition
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -98,8 +95,8 @@ export default function SummaryForm() {
     },
   });
 
-  // Update states based on country
   useEffect(() => {
+    // Update states when country changes
     const country = form.getValues("location.country");
     if (country) {
       const countryData: any = locations.find(
@@ -109,15 +106,15 @@ export default function SummaryForm() {
     }
   }, [form.watch("location.country")]);
 
-  // Submit
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function handleSubmit(values: z.infer<typeof formSchema>) {
+    values.highlights = Array.from(values.highlights);
+    await updateUser(clerkId, values);
   }
 
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={form.handleSubmit(handleSubmit)}
         className="container flex flex-col gap-4"
       >
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -300,7 +297,7 @@ export default function SummaryForm() {
                             if (field.value.has(highlight)) {
                               field.value.delete(highlight);
                               form.setValue("highlights", field.value);
-                            } else if (field.value.size < 5)
+                            } else if (field.value.size < 3)
                               form.setValue(
                                 "highlights",
                                 field.value.add(highlight),
@@ -323,7 +320,7 @@ export default function SummaryForm() {
                 </PopoverContent>
               </Popover>
               <FormMessage />
-              <FormDescription>Select up to 5 highlights.</FormDescription>
+              <FormDescription>Select up to 3 highlights.</FormDescription>
             </FormItem>
           )}
         />
@@ -337,6 +334,7 @@ export default function SummaryForm() {
                 <Textarea
                   placeholder="Tell us about yourself."
                   className="min-h-32 resize-y max-h-64"
+                  maxLength={256}
                   required
                   {...field}
                 />

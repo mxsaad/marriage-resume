@@ -23,21 +23,18 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "../ui/textarea";
 import { height, complexion, build } from "@/data/form-data";
+import { updateUser } from "@/lib/actions/user.actions";
 
 // Form Schema
 const formSchema: z.Schema = z.object({
   height: z.string(),
-  weight: z
-    .number(),
+  weight: z.number(),
   complexion: z.string(),
   build: z.string(),
-  description: z
-    .string()
-    .max(1000, { message: "Must be at most 1000 characters long" }),
+  description: z.string(),
 });
 
-export default function AppearanceForm() {
-  // Form Definition
+export default function AppearanceForm({ clerkId }: { clerkId: string }) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -49,15 +46,14 @@ export default function AppearanceForm() {
     },
   });
 
-  // Submit
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function handleSubmit(values: z.infer<typeof formSchema>) {
+    await updateUser(clerkId, { appearance: values });
   }
 
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={form.handleSubmit(handleSubmit)}
         className="container flex flex-col gap-4"
       >
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -67,10 +63,7 @@ export default function AppearanceForm() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Height</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  required
-                >
+                <Select onValueChange={field.onChange} required>
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Please select" />
@@ -119,10 +112,7 @@ export default function AppearanceForm() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Complexion</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  required
-                >
+                <Select onValueChange={field.onChange} required>
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Please select" />
@@ -147,10 +137,7 @@ export default function AppearanceForm() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Build</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  required
-                >
+                <Select onValueChange={field.onChange} required>
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Please select" />
@@ -175,11 +162,12 @@ export default function AppearanceForm() {
           name="description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel >Description</FormLabel>
+              <FormLabel>Description</FormLabel>
               <FormControl>
                 <Textarea
                   placeholder="Describe your appearance and dress."
                   className="min-h-32 resize-y max-h-64"
+                  maxLength={1000}
                   required
                   {...field}
                 />
