@@ -1,27 +1,40 @@
-import { currentUser } from "@clerk/nextjs"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { EyeOpenIcon, Pencil2Icon } from "@radix-ui/react-icons";
 import ViewProfile from "@/components/shared/view-profile";
 import EditProfile from "@/components/shared/edit-profile";
+import { auth } from "@clerk/nextjs/server";
+import connectToDatabase from "@/lib/mongodb";
+import { notFound } from "next/navigation";
 
-export default async function Profile({ params }: { params: { username: string } }) {
-  const user = await currentUser();
+export default async function Profile({
+  params,
+}: {
+  params: { username: string };
+}) {
+  const username = params.username.replace("%40", "").toLowerCase(); // Remove %40 (@) and convert to lowercase
+  const { database } = await connectToDatabase();
+  const user = await database.collection("users").findOne({ username });
+  if (!user) return notFound();
+
   return (
     <main className="min-h-screen w-screen px-6 py-12">
       <div className="flex flex-col items-center">
         <Tabs defaultValue="view" className="w-full max-w-prose text-center">
-          {`%40${user?.username}` === params.username.toLowerCase() && ( // %40 = @ symbol in URL
-            <TabsList className="mt-10 mb-4">
-              <TabsTrigger value="view" className="flex gap-2 items-center">
-                <EyeOpenIcon /> View
-              </TabsTrigger>
-              <TabsTrigger value="edit" className="flex gap-2 items-center">
-                <Pencil2Icon /> Edit
-              </TabsTrigger>
-            </TabsList>
-          )}
+          {
+            // Only show tabs if the user is viewing their own profile
+            auth().sessionClaims?.username === username && (
+              <TabsList className="mt-10 mb-4">
+                <TabsTrigger value="view" className="flex gap-2 items-center">
+                  <EyeOpenIcon /> View
+                </TabsTrigger>
+                <TabsTrigger value="edit" className="flex gap-2 items-center">
+                  <Pencil2Icon /> Edit
+                </TabsTrigger>
+              </TabsList>
+            )
+          }
           <TabsContent value="view">
-            <ViewProfile />
+            <ViewProfile user={user} />
           </TabsContent>
           <TabsContent value="edit">
             <EditProfile />
@@ -29,5 +42,5 @@ export default async function Profile({ params }: { params: { username: string }
         </Tabs>
       </div>
     </main>
-  )
+  );
 }
