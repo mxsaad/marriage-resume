@@ -1,15 +1,21 @@
+import million from "million/compiler";
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
     remotePatterns: [
-        {
-            protocol: 'https',
-            hostname: '**',
-            port: '',
-            pathname: '**',
-        },
+      {
+        protocol: "https",
+        hostname: "**",
+        port: "",
+        pathname: "**",
+      },
     ],
   },
 };
 
-export default nextConfig;
+const millionConfig = {
+  auto: true,
+};
+
+export default million.next(nextConfig, millionConfig);
