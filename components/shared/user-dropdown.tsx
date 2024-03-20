@@ -13,12 +13,11 @@ import {
   ExitIcon,
   HamburgerMenuIcon
 } from "@radix-ui/react-icons"
-import { SignOutButton, currentUser } from "@clerk/nextjs"
+import { SignOutButton } from "@clerk/nextjs"
 import Link from "next/link"
+import { auth } from "@clerk/nextjs/server"
 
 export default async function UserDropdown() {
-  const user = await currentUser()
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -27,7 +26,7 @@ export default async function UserDropdown() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuLabel>{`@${user?.username}`}</DropdownMenuLabel>
+        <DropdownMenuLabel>{`@${auth().sessionClaims?.username}`}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
           <Link href="/account" className="flex gap-2 items-center justify-center">
