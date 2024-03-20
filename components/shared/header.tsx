@@ -1,11 +1,11 @@
-import Link from "next/link"
-import { ModeToggle } from "@/components/ui/mode-toggle"
-import { Button } from "@/components/ui/button"
-import { SignedIn, SignedOut, SignUpButton } from "@clerk/nextjs"
-import Image from "next/image"
-import UserDropdown from "@/components/shared/user-dropdown"
+import Link from "next/link";
+import { ModeToggle } from "@/components/ui/mode-toggle";
+import { Button } from "@/components/ui/button";
+import { SignedIn, SignedOut, SignUpButton } from "@clerk/nextjs";
+import Image from "next/image";
+import UserDropdown from "@/components/shared/user-dropdown";
 
-const Header = () => {
+export default function Header() {
   return (
     <header className="fixed bg-background/95 z-10 self-center w-screen rounded-b-md border-b-2 flex items-center justify-between gap-2 py-2">
       <Link href="/" className="flex gap-2 items-center justify-center pl-4">
@@ -24,7 +24,5 @@ const Header = () => {
         </SignedOut>
       </div>
     </header>
-  )
+  );
 }
-
-export default Header

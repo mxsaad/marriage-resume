@@ -38,7 +38,7 @@ export default function ViewProfile({ user }: { user: WithId<Document> }) {
           <Badge>{user.religion.madhab}</Badge>
         </div>
         <Separator />
-        <div className="w-full flex flex-col md:flex-row justify-evenly gap-4">
+        <div className="w-full columns-1 md:columns-2 space-y-4 md:space-y-0 md:space-x-4">
           <div>
             <h3 className="text-xl font-bold">Practice</h3>
             <p className="text-muted-foreground break-words">
