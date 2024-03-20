@@ -19,27 +19,16 @@ export default function ViewProfile({ user }: { user: WithId<Document> }) {
           </h1>
           <p className="text-sm text-muted-foreground">{`@${user.username}`}</p>
           <div className="flex flex-wrap gap-2 mt-2">
-            {user.highlights.map((highlight: string) => (
-              <Badge key={highlight}>{highlight}</Badge>
-            ))}
+            <Badge>{user.status}</Badge>
+            <Badge>{user.gender}</Badge>
+            <Badge>
+              {new Date().getFullYear() - new Date(user.dob).getFullYear()}
+            </Badge>
+            <Badge>{`${user.location.state}, ${user.location.country}`}</Badge>
           </div>
+          <p className="mt-2 text-muted-foreground break-words">{user.bio}</p>
         </div>
       </div>
-
-      {/* Summary */}
-      <section className="w-full flex flex-col gap-2 border-2 rounded-[--radius] p-4">
-        <h2 className="text-2xl font-bold">Summary</h2>
-        <div className="flex flex-wrap gap-2">
-          <Badge>{user.status}</Badge>
-          <Badge>{user.gender}</Badge>
-          <Badge>
-            {new Date().getFullYear() - new Date(user.dob).getFullYear()}
-          </Badge>
-          <Badge>{`${user.location.state}, ${user.location.country}`}</Badge>
-        </div>
-        <Separator />
-        <p className="text-muted-foreground break-words">{user.bio}</p>
-      </section>
 
       {/* Religion */}
       <section className="w-full flex flex-col gap-2 border-2 rounded-[--radius] p-4">

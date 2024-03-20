@@ -30,7 +30,6 @@ export type SummarySection = {
   };
   status: string;
   bio: string;
-  highlights: string[];
 };
 
 export type ReligionSection = {
