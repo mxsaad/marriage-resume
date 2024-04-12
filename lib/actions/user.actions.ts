@@ -1,7 +1,7 @@
 "use server";
 
 import connectToDatabase from "@/lib/mongodb";
-import { CreateUserParams, UpdateUserParams } from "@/types";
+import { CreateUserParams, GetUserParams, UpdateUserParams } from "@/types";
 import { revalidatePath } from "next/cache";
 
 export async function createUser(user: CreateUserParams) {
@@ -16,6 +16,17 @@ export async function createUser(user: CreateUserParams) {
     return newUser;
   } catch (error) {
     console.error("Error creating user:", error);
+  }
+}
+
+export async function getUser(key: GetUserParams) {
+  try {
+    const { database } = await connectToDatabase();
+    const users = database.collection("users");
+    const user = await users.findOne(key);
+    return user;
+  } catch (error) {
+    console.error("Error getting user:", error);
   }
 }
 

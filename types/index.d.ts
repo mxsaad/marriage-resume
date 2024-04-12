@@ -4,6 +4,11 @@ export type CreateUserParams = {
   username: string;
 };
 
+export type GetUserParams =
+  | { clerkId: string }
+  | { email: string }
+  | { username: string };
+
 export type UpdateUserParams =
   | AccountSettings
   | SummarySection

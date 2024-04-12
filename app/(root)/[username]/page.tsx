@@ -3,8 +3,8 @@ import { EyeOpenIcon, Pencil2Icon } from "@radix-ui/react-icons";
 import ViewProfile from "@/components/shared/view-profile";
 import EditProfile from "@/components/shared/edit-profile";
 import { auth } from "@clerk/nextjs/server";
-import connectToDatabase from "@/lib/mongodb";
 import { notFound } from "next/navigation";
+import { getUser } from "@/lib/actions/user.actions";
 
 export default async function Profile({
   params,
@@ -12,8 +12,7 @@ export default async function Profile({
   params: { username: string };
 }) {
   const username = params.username.replace("%40", "").toLowerCase(); // Remove %40 (@) and convert to lowercase
-  const { database } = await connectToDatabase();
-  const user = await database.collection("users").findOne({ username });
+  const user = await getUser({ username });
   if (!user) return notFound();
 
   return (
