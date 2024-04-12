@@ -1,27 +1,35 @@
-import { Db, MongoClient } from "mongodb";
+import { MongoClient } from "mongodb";
 
-let mongoClient: MongoClient;
-let database: Db;
+const uri = process.env.MONGODB_URI as string; // your mongodb connection string
+const options = {};
 
-const uri = process.env.MONGODB_URI as string;
-const dbName = process.env.MONGODB_DB_NAME as string;
-if (!(uri || dbName))
-  throw new Error("Please add your MongoDB URI and DB_NAME to .env.local");
+declare global {
+  var _mongoClientPromise: Promise<MongoClient>;
+}
 
-export default async function connectToDatabase() {
-  if (mongoClient && database) return { mongoClient, database };
-
-  if (process.env.NODE_ENV === "development") {
-    if (!(global as any)._mongoClient) {
-      mongoClient = await new MongoClient(uri).connect();
-      (global as any)._mongoClient = mongoClient;
-    } else {
-      mongoClient = (global as any)._mongoClient;
+class Singleton {
+  private static _instance: Singleton;
+  private client: MongoClient;
+  private clientPromise: Promise<MongoClient>;
+  private constructor() {
+    this.client = new MongoClient(uri, options);
+    this.clientPromise = this.client.connect();
+    if (process.env.NODE_ENV === "development") {
+      // In development mode, use a global variable so that the value
+      // is preserved across module reloads caused by HMR (Hot Module Replacement).
+      global._mongoClientPromise = this.clientPromise;
     }
-  } else {
-    mongoClient = await new MongoClient(uri).connect();
   }
 
-  database = mongoClient.db(dbName);
-  return { mongoClient, database };
+  public static get instance() {
+    if (!this._instance) {
+      this._instance = new Singleton();
+    }
+    return this._instance.clientPromise;
+  }
 }
+const clientPromise = Singleton.instance;
+
+// Export a module-scoped MongoClient promise. By doing this in a
+// separate module, the client can be shared across functions.
+export default clientPromise;
