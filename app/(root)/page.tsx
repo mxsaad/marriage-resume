@@ -7,7 +7,7 @@ import PhoneMockup from "@/components/shared/phone-mockup"
 export default function Component() {
   return (
     <main>
-      <section className="min-h-screen w-screen px-10 md:px-24 flex flex-col lg:flex-row gap-12 items-center justify-center">
+      <section className="min-h-screen w-full px-10 md:px-24 flex flex-col lg:flex-row gap-12 items-center justify-center">
         {/* Typography & CTA */}
         <div className="mt-32 lg:mt-0 max-w-sm sm:max-w-md md:max-w-2xl lg:max-w-3xl">
           <Badge variant="secondary" className="pl-0.5 flex gap-2 w-fit">
@@ -25,7 +25,7 @@ export default function Component() {
       </section>
 
       {/* Features */}
-      <section className="w-screen px-10 bg-transparent py-12 md:py-24 flex flex-col items-center justify-center">
+      <section className="w-full px-10 bg-transparent py-12 md:py-24 flex flex-col items-center justify-center">
         <div className="max-w-xs sm:max-w-sm md:max-w-max mb-8 flex flex-col items-center justify-center text-center gap-2 md:gap-4">
           <h1 className="font-bold tracking-tighter text-4xl sm:text-5xl lg:text-6xl/none">
             Discover Our Unique Features
@@ -54,7 +54,7 @@ export default function Component() {
       </section>
 
       {/* CTA */}
-      <section className="w-screen mt-12 mb-24 md:mb-36 px-10 md:px-24 flex flex-col lg:flex-row gap-12 items-center justify-center">
+      <section className="w-full mt-12 mb-24 md:mb-36 px-10 md:px-24 flex flex-col lg:flex-row gap-12 items-center justify-center">
         <div className="max-w-sm sm:max-w-md md:max-w-2xl lg:max-w-3xl">
           <h1 className="font-bold tracking-tighter text-4xl sm:text-5xl lg:text-6xl/none">
             Get started today. <br /> Get married tomorrow.

@@ -17,12 +17,12 @@ export default async function Profile({
 
   return (
     <main className="min-h-screen w-full">
-      <div className="flex flex-col items-center px-6 py-12">
+      <div className="flex flex-col items-center px-6 py-4">
         <Tabs defaultValue="view" className="w-full max-w-prose text-center">
           {
             // Only show tabs if the user is viewing their own profile
             auth().sessionClaims?.username === username && (
-              <TabsList className="mt-10 mb-2">
+              <TabsList className="mb-2">
                 <TabsTrigger value="view" className="flex gap-2 items-center">
                   <EyeOpenIcon /> View
                 </TabsTrigger>
