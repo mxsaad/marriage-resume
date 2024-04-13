@@ -50,7 +50,7 @@ export default function Header({ children }: { children: React.ReactNode }) {
           </div>
           <div className="flex-1">
             <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
-              { /* TODO: Replace link when matchmaker is implemented (don't link in sheet, too) */ }
+              {/* TODO: Replace link when matchmaker is implemented (don't link in sheet, too) */}
               <Link
                 href="#"
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
@@ -74,7 +74,7 @@ export default function Header({ children }: { children: React.ReactNode }) {
               </Link>
             </nav>
           </div>
-          <div className="p-4 mt-auto">
+          <div className="p-4 pb-2 mt-auto">
             <Card>
               <CardHeader className="p-2 pt-0 md:p-4">
                 <CardTitle>Upgrade to Pro</CardTitle>
@@ -83,12 +83,27 @@ export default function Header({ children }: { children: React.ReactNode }) {
                 </CardDescription>
               </CardHeader>
               <CardContent className="p-2 pt-0 md:p-4 md:pt-0">
-              { /* TODO: Link to pricing page when implemented */}
+                {/* TODO: Link to pricing page when implemented */}
                 <Button size="sm" className="w-full">
                   Upgrade
                 </Button>
               </CardContent>
             </Card>
+          </div>
+          <div className="flex items-center gap-2 p-4 pt-0">
+            <SignedIn>
+              <SignOutButton>
+                <Button variant="secondary" size="icon">
+                  <ExitIcon className="w-[1.2rem] h-[1.2rem]" />
+                </Button>
+              </SignOutButton>
+            </SignedIn>
+            <SignedOut>
+              <SignUpButton>
+                <Button variant="secondary">Sign Up</Button>
+              </SignUpButton>
+            </SignedOut>
+            <ModeToggle variant="secondary" />
           </div>
         </div>
       </div>
@@ -116,7 +131,10 @@ export default function Header({ children }: { children: React.ReactNode }) {
               <SheetContent side="left" className="flex flex-col">
                 <nav className="grid gap-2 text-lg font-medium">
                   <SheetHeader>
-                    <Link href="/" className="flex flex-row items-center justify-center gap-2 mb-2 text-xl">
+                    <Link
+                      href="/"
+                      className="flex flex-row items-center justify-center gap-2 mb-2 text-xl"
+                    >
                       <Image
                         src="/favicon.png"
                         alt="MarriageResume"
