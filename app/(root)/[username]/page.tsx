@@ -13,7 +13,7 @@ export default async function Profile({
 }) {
   const username = params.username.replace("%40", "").toLowerCase(); // Remove %40 (@) and convert to lowercase
   const user = await getUser({ username });
-  if (!user) return notFound();
+  if (!user) notFound();
 
   return (
     <main className="min-h-screen w-full">
