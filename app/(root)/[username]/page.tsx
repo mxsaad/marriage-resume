@@ -2,7 +2,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { EyeOpenIcon, Pencil2Icon } from "@radix-ui/react-icons";
 import ViewProfile from "@/components/shared/view-profile";
 import EditProfile from "@/components/shared/edit-profile";
-import { auth } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs";
 import { notFound } from "next/navigation";
 import { getUser } from "@/lib/actions/user.actions";
 
