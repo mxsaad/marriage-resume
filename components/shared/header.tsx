@@ -27,7 +27,7 @@ import { Badge } from "@/components/ui/badge";
 export default function Header({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen w-full">
-      <header className="max-w-full z-10 sticky top-0 bg-background flex justify-between h-14 items-center gap-4 border-b px-4">
+      <header className="max-w-full z-10 sticky top-0 bg-background flex justify-between h-14 items-center gap-4 border-b px-4 md:px-6">
         <div className="hidden md:flex gap-4 items-center">
           <Link
             href="/"
