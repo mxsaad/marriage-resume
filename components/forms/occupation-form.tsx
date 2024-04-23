@@ -30,6 +30,7 @@ import {
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 import { cn } from "@/lib/utils";
 import { updateUser } from "@/lib/actions/user.actions";
+import type { WithId, Document } from "mongodb";
 
 // Form Schema
 const formSchema: z.Schema = z.object({
@@ -47,18 +48,18 @@ const tags = [
   "Billionaire",
 ];
 
-export default function OccupationForm({ clerkId }: { clerkId: string }) {
+export default function OccupationForm({ user }: { user: WithId<Document> }) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      tags: new Set<string>(),
-      description: "",
+      tags: new Set(user.occupation.tags as string[]),
+      description: user.occupation.description as string,
     },
   });
 
   async function handleSubmit(values: z.infer<typeof formSchema>) {
     values.tags = Array.from(values.tags);
-    await updateUser(clerkId, { occupation: values });
+    await updateUser(user.clerkId, { occupation: values });
   }
 
   return (
@@ -151,7 +152,11 @@ export default function OccupationForm({ clerkId }: { clerkId: string }) {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-fit self-end">
+        <Button
+          type="submit"
+          className="w-fit self-end"
+          disabled={!form.formState.isDirty}
+        >
           Save
         </Button>
       </form>

@@ -6,7 +6,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Document, WithId } from "mongodb";
+import type { WithId, Document } from "mongodb";
 
 export default function ViewProfile({ user }: { user: WithId<Document> }) {
   return (

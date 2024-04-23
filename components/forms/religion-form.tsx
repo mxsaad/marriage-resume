@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/select";
 import { aqeedah, madhab } from "@/data/form-data";
 import { updateUser } from "@/lib/actions/user.actions";
+import type { WithId, Document } from "mongodb";
 
 // Form Schema
 const formSchema: z.Schema = z.object({
@@ -32,19 +33,19 @@ const formSchema: z.Schema = z.object({
   knowledge: z.string(),
 });
 
-export default function ReligionForm({ clerkId }: { clerkId: string }) {
+export default function ReligionForm({ user }: { user: WithId<Document> }) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      aqeedah: "",
-      madhab: "",
-      practice: "",
-      knowledge: "",
+      aqeedah: user.religion.aqeedah as string,
+      madhab: user.religion.madhab as string,
+      practice: user.religion.practice as string,
+      knowledge: user.religion.knowledge as string,
     },
   });
 
   async function handleSubmit(values: z.infer<typeof formSchema>) {
-    await updateUser(clerkId, { religion: values });
+    await updateUser(user.clerkId, { religion: values });
   }
 
   return (
@@ -60,7 +61,11 @@ export default function ReligionForm({ clerkId }: { clerkId: string }) {
             render={({ field }) => (
               <FormItem className="flex-grow">
                 <FormLabel>Aqeedah</FormLabel>
-                <Select onValueChange={field.onChange} required>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                  required
+                >
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Please select" />
@@ -87,7 +92,11 @@ export default function ReligionForm({ clerkId }: { clerkId: string }) {
             render={({ field }) => (
               <FormItem className="flex-grow">
                 <FormLabel>Madhab</FormLabel>
-                <Select onValueChange={field.onChange} required>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                  required
+                >
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Please select" />
@@ -145,7 +154,11 @@ export default function ReligionForm({ clerkId }: { clerkId: string }) {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-fit self-end">
+        <Button
+          type="submit"
+          className="w-fit self-end"
+          disabled={!form.formState.isDirty}
+        >
           Save
         </Button>
       </form>

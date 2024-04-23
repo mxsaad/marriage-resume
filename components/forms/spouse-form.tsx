@@ -31,6 +31,7 @@ import {
 import { CaretSortIcon, CheckIcon, Cross2Icon } from "@radix-ui/react-icons";
 import { cn } from "@/lib/utils";
 import { updateUser } from "@/lib/actions/user.actions";
+import type { WithId, Document } from "mongodb";
 
 // Form Schema
 const formSchema: z.Schema = z.object({
@@ -50,13 +51,13 @@ const tags = [
   "Adventurous",
 ];
 
-export default function SpouseForm({ clerkId }: { clerkId: string }) {
+export default function SpouseForm({ user }: { user: WithId<Document> }) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      tags: new Set<string>(),
-      qualities: [],
-      dealBreakers: [],
+      qualities: user.spouse.qualities as string[],
+      dealBreakers: user.spouse.dealBreakers as string[],
+      tags: new Set(user.spouse.tags as string[]),
     },
   });
 
@@ -80,12 +81,12 @@ export default function SpouseForm({ clerkId }: { clerkId: string }) {
 
   async function handleSubmit(values: z.infer<typeof formSchema>) {
     values.tags = Array.from(values.tags);
-    await updateUser(clerkId, { spouse: values });
+    await updateUser(user.clerkId, { spouse: values });
   }
 
   useEffect(() => {
-    qualitiesAppend("");
-    dealBreakersAppend("");
+    if (!user.spouse.qualities.length) qualitiesAppend("");
+    if (!user.spouse.dealBreakers.length) dealBreakersAppend("");
   }, []);
 
   return (
@@ -182,16 +183,15 @@ export default function SpouseForm({ clerkId }: { clerkId: string }) {
                           required
                           {...field}
                         />
-                        {index !== 0 && (
-                          <Button
-                            type="button"
-                            variant="outline"
-                            size="icon"
-                            onClick={() => qualitiesRemove(index)}
-                          >
-                            <Cross2Icon />
-                          </Button>
-                        )}
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="icon"
+                          onClick={() => qualitiesRemove(index)}
+                          disabled={!index}
+                        >
+                          <Cross2Icon />
+                        </Button>
                       </div>
                     </FormControl>
                     <FormMessage />
@@ -205,7 +205,7 @@ export default function SpouseForm({ clerkId }: { clerkId: string }) {
               size="sm"
               className="mt-2"
               onClick={() => qualitiesAppend("")}
-              disabled={qualitiesFields.length === 5}
+              disabled={qualitiesFields.length >= 5}
             >
               Add Quality
             </Button>
@@ -232,16 +232,15 @@ export default function SpouseForm({ clerkId }: { clerkId: string }) {
                           required
                           {...field}
                         />
-                        {index !== 0 && (
-                          <Button
-                            type="button"
-                            variant="outline"
-                            size="icon"
-                            onClick={() => dealBreakersRemove(index)}
-                          >
-                            <Cross2Icon />
-                          </Button>
-                        )}
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="icon"
+                          onClick={() => dealBreakersRemove(index)}
+                          disabled={!index}
+                        >
+                          <Cross2Icon />
+                        </Button>
                       </div>
                     </FormControl>
                     <FormMessage />
@@ -255,13 +254,17 @@ export default function SpouseForm({ clerkId }: { clerkId: string }) {
               size="sm"
               className="mt-2"
               onClick={() => dealBreakersAppend("")}
-              disabled={dealBreakersFields.length === 5}
+              disabled={dealBreakersFields.length >= 5}
             >
               Add Deal-Breaker
             </Button>
           </div>
         </div>
-        <Button type="submit" className="w-fit self-end">
+        <Button
+          type="submit"
+          className="w-fit self-end"
+          disabled={!form.formState.isDirty}
+        >
           Save
         </Button>
       </form>

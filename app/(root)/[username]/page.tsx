@@ -36,7 +36,7 @@ export default async function Profile({
             <ViewProfile user={user} />
           </TabsContent>
           <TabsContent value="edit">
-            <EditProfile />
+            <EditProfile user={user}/>
           </TabsContent>
         </Tabs>
       </div>

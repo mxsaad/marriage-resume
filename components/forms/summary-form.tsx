@@ -25,6 +25,7 @@ import {
 import locations from "@/data/locations.json";
 import { useEffect, useState } from "react";
 import { updateUser } from "@/lib/actions/user.actions";
+import type { WithId, Document } from "mongodb";
 
 // Form Schema
 const formSchema: z.Schema = z.object({
@@ -39,30 +40,32 @@ const formSchema: z.Schema = z.object({
   bio: z.string(),
 });
 
-export default function SummaryForm({ clerkId }: { clerkId: string }) {
-  // Ensure the user is at least 18 years old
-  const today = new Date();
-  const maxDate = new Date(
-    today.getFullYear() - 18,
-    today.getMonth(),
-    today.getDate(),
-  ).toISOString().split("T")[0];
+// Ensure the user is at least 18 years old
+const today = new Date();
+const maxDate = new Date(
+  today.getFullYear() - 18,
+  today.getMonth(),
+  today.getDate(),
+)
+  .toISOString()
+  .split("T")[0];
 
+export default function SummaryForm({ user }: { user: WithId<Document> }) {
   // States for the country
   const [states, setStates] = useState([]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      dob: "",
-      gender: "",
-      status: "",
+      name: user.name as string,
+      dob: user.dob.toISOString().split("T")[0] as string,
+      gender: user.gender as string,
+      status: user.status as string,
       location: {
-        state: "",
-        country: "",
+        country: user.location.country as string,
+        state: user.location.state as string,
       },
-      bio: "",
+      bio: user.bio as string,
     },
   });
 
@@ -78,7 +81,7 @@ export default function SummaryForm({ clerkId }: { clerkId: string }) {
   }, [form.watch("location.country")]);
 
   async function handleSubmit(values: z.infer<typeof formSchema>) {
-    await updateUser(clerkId, values);
+    await updateUser(user.clerkId, values);
   }
 
   return (
@@ -117,12 +120,7 @@ export default function SummaryForm({ clerkId }: { clerkId: string }) {
               <FormItem>
                 <FormLabel>Date of Birth</FormLabel>
                 <FormControl>
-                  <Input
-                    type="date"
-                    max={maxDate}
-                    required
-                    {...field}
-                  />
+                  <Input type="date" max={maxDate} required {...field} />
                 </FormControl>
                 <FormMessage />
                 <FormDescription>Used to calculate your age.</FormDescription>
@@ -135,7 +133,11 @@ export default function SummaryForm({ clerkId }: { clerkId: string }) {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Gender</FormLabel>
-                <Select onValueChange={field.onChange} required>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                  required
+                >
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Please select" />
@@ -157,7 +159,11 @@ export default function SummaryForm({ clerkId }: { clerkId: string }) {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Status</FormLabel>
-                <Select onValueChange={field.onChange} required>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                  required
+                >
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Please select" />
@@ -181,7 +187,11 @@ export default function SummaryForm({ clerkId }: { clerkId: string }) {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Country</FormLabel>
-                <Select onValueChange={field.onChange} required>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                  required
+                >
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Please select" />
@@ -210,7 +220,8 @@ export default function SummaryForm({ clerkId }: { clerkId: string }) {
                 <FormLabel>State</FormLabel>
                 <Select
                   onValueChange={field.onChange}
-                  disabled={!form.getValues("location.country")}
+                  disabled={!form.watch("location.country")}
+                  defaultValue={field.value}
                   required
                 >
                   <FormControl>
@@ -251,7 +262,11 @@ export default function SummaryForm({ clerkId }: { clerkId: string }) {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-fit self-end">
+        <Button
+          type="submit"
+          className="w-fit self-end"
+          disabled={!form.formState.isDirty}
+        >
           Save
         </Button>
       </form>

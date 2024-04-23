@@ -17,6 +17,7 @@ import {
 import { PhoneInput } from "@/components/ui/phone-input";
 import { isValidPhoneNumber } from "react-phone-number-input";
 import { updateUser } from "@/lib/actions/user.actions";
+import type { WithId, Document } from "mongodb";
 
 const formSchema: z.Schema = z.object({
   email: z.string().email(),
@@ -25,17 +26,17 @@ const formSchema: z.Schema = z.object({
     .refine(isValidPhoneNumber, { message: "Invalid phone number" }),
 });
 
-export default function ContactForm({ clerkId }: { clerkId: string }) {
+export default function ContactForm({ user }: { user: WithId<Document> }) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
-      phone: "",
+      email: user.contact.email as string,
+      phone: user.contact.phone as string,
     },
   });
 
   async function handleSubmit(values: z.infer<typeof formSchema>) {
-    await updateUser(clerkId, { contact: values });
+    await updateUser(user.clerkId, { contact: values });
   }
   return (
     <Form {...form}>
@@ -97,7 +98,11 @@ export default function ContactForm({ clerkId }: { clerkId: string }) {
             )}
           />
         </div>
-        <Button type="submit" className="w-fit self-end">
+        <Button
+          type="submit"
+          className="w-fit self-end"
+          disabled={!form.formState.isDirty}
+        >
           Save
         </Button>
       </form>

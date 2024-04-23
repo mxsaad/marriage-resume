@@ -18,18 +18,19 @@ import {
 import { cn } from "@/lib/utils";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { updateUser } from "@/lib/actions/user.actions";
+import type { WithId, Document } from "mongodb";
 
 const formSchema: z.Schema = z.object({
   shortTerm: z.array(z.string()),
   longTerm: z.array(z.string()),
 });
 
-export default function GoalsForm({ clerkId }: { clerkId: string }) {
+export default function GoalsForm({ user }: { user: WithId<Document> }) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      shortTerm: [],
-      longTerm: [],
+      shortTerm: user.goals.shortTerm as string[],
+      longTerm: user.goals.longTerm as string[],
     },
   });
 
@@ -52,12 +53,12 @@ export default function GoalsForm({ clerkId }: { clerkId: string }) {
   });
 
   async function handleSubmit(values: z.infer<typeof formSchema>) {
-    await updateUser(clerkId, { goals: values });
+    await updateUser(user.clerkId, { goals: values });
   }
 
   useEffect(() => {
-    shortTermAppend("");
-    longTermAppend("");
+    if (!user.goals.shortTerm.length) shortTermAppend("");
+    if (!user.goals.longTerm.length) longTermAppend("");
   }, []);
 
   return (
@@ -89,16 +90,15 @@ export default function GoalsForm({ clerkId }: { clerkId: string }) {
                           required
                           {...field}
                         />
-                        {index !== 0 && (
-                          <Button
-                            type="button"
-                            variant="outline"
-                            size="icon"
-                            onClick={() => shortTermRemove(index)}
-                          >
-                            <Cross2Icon />
-                          </Button>
-                        )}
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="icon"
+                          onClick={() => shortTermRemove(index)}
+                          disabled={!index}
+                        >
+                          <Cross2Icon />
+                        </Button>
                       </div>
                     </FormControl>
                     <FormMessage />
@@ -112,7 +112,7 @@ export default function GoalsForm({ clerkId }: { clerkId: string }) {
               size="sm"
               className="mt-2"
               onClick={() => shortTermAppend("")}
-              disabled={shortTermFields.length === 5}
+              disabled={shortTermFields.length >= 5}
             >
               Add Goal
             </Button>
@@ -139,16 +139,15 @@ export default function GoalsForm({ clerkId }: { clerkId: string }) {
                           required
                           {...field}
                         />
-                        {index !== 0 && (
-                          <Button
-                            type="button"
-                            variant="outline"
-                            size="icon"
-                            onClick={() => longTermRemove(index)}
-                          >
-                            <Cross2Icon />
-                          </Button>
-                        )}
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="icon"
+                          onClick={() => longTermRemove(index)}
+                          disabled={!index}
+                        >
+                          <Cross2Icon />
+                        </Button>
                       </div>
                     </FormControl>
                     <FormMessage />
@@ -162,13 +161,17 @@ export default function GoalsForm({ clerkId }: { clerkId: string }) {
               size="sm"
               className="mt-2"
               onClick={() => longTermAppend("")}
-              disabled={longTermFields.length === 5}
+              disabled={longTermFields.length >= 5}
             >
               Add Goal
             </Button>
           </div>
         </div>
-        <Button type="submit" className="w-fit self-end">
+        <Button
+          type="submit"
+          className="w-fit self-end"
+          disabled={!form.formState.isDirty}
+        >
           Save
         </Button>
       </form>

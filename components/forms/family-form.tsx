@@ -32,6 +32,7 @@ import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 import locationsData from "@/data/locations.json";
 import languagesData from "@/data/languages.json";
 import { updateUser } from "@/lib/actions/user.actions";
+import type { WithId, Document } from "mongodb";
 
 // Form Schema
 const formSchema: z.Schema = z.object({
@@ -40,20 +41,20 @@ const formSchema: z.Schema = z.object({
   description: z.string(),
 });
 
-export default function FamilyForm({ clerkId }: { clerkId: string }) {
+export default function FamilyForm({ user }: { user: WithId<Document> }) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      countries: new Set<string>(),
-      languages: new Set<string>(),
-      description: "",
+      countries: new Set(user.family.countries as string[]),
+      languages: new Set(user.family.languages as string[]),
+      description: user.family.description as string,
     },
   });
 
   async function handleSubmit(values: z.infer<typeof formSchema>) {
     values.countries = Array.from(values.countries);
     values.languages = Array.from(values.languages);
-    await updateUser(clerkId, { family: values });
+    await updateUser(user.clerkId, { family: values });
   }
 
   return (
@@ -217,7 +218,11 @@ export default function FamilyForm({ clerkId }: { clerkId: string }) {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-fit self-end">
+        <Button
+          type="submit"
+          className="w-fit self-end"
+          disabled={!form.formState.isDirty}
+        >
           Save
         </Button>
       </form>

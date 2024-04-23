@@ -24,6 +24,7 @@ import {
 import { Textarea } from "../ui/textarea";
 import { height, complexion, build } from "@/data/form-data";
 import { updateUser } from "@/lib/actions/user.actions";
+import type { WithId, Document } from "mongodb";
 
 // Form Schema
 const formSchema: z.Schema = z.object({
@@ -34,20 +35,20 @@ const formSchema: z.Schema = z.object({
   description: z.string(),
 });
 
-export default function AppearanceForm({ clerkId }: { clerkId: string }) {
+export default function AppearanceForm({ user }: { user: WithId<Document> }) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      height: "",
-      weight: 0,
-      complexion: "",
-      build: "",
-      description: "",
+      height: user.appearance.height as string,
+      weight: user.appearance.weight as number,
+      complexion: user.appearance.complexion as string,
+      build: user.appearance.build as string,
+      description: user.appearance.description as string,
     },
   });
 
   async function handleSubmit(values: z.infer<typeof formSchema>) {
-    await updateUser(clerkId, { appearance: values });
+    await updateUser(user.clerkId, { appearance: values });
   }
 
   return (
@@ -63,7 +64,11 @@ export default function AppearanceForm({ clerkId }: { clerkId: string }) {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Height</FormLabel>
-                <Select onValueChange={field.onChange} required>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                  required
+                >
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Please select" />
@@ -112,7 +117,11 @@ export default function AppearanceForm({ clerkId }: { clerkId: string }) {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Complexion</FormLabel>
-                <Select onValueChange={field.onChange} required>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                  required
+                >
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Please select" />
@@ -137,7 +146,11 @@ export default function AppearanceForm({ clerkId }: { clerkId: string }) {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Build</FormLabel>
-                <Select onValueChange={field.onChange} required>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                  required
+                >
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Please select" />
@@ -176,7 +189,11 @@ export default function AppearanceForm({ clerkId }: { clerkId: string }) {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-fit self-end">
+        <Button
+          type="submit"
+          className="w-fit self-end"
+          disabled={!form.formState.isDirty}
+        >
           Save
         </Button>
       </form>
