@@ -14,7 +14,6 @@ import {
   CommandGroup,
   CommandInput,
   CommandItem,
-  CommandList,
 } from "@/components/ui/command";
 import { Input, InputProps } from "@/components/ui/input";
 import {
@@ -24,6 +23,7 @@ import {
 } from "@/components/ui/popover";
 
 import { cn } from "@/lib/utils";
+import { ScrollArea } from "@radix-ui/react-scroll-area";
 
 export type PhoneInputValue = RPNInput.Value;
 
@@ -46,7 +46,12 @@ PhoneInputSimple.displayName = "PhoneInputSimple";
 
 type PhoneInputProps = React.ComponentProps<typeof RPNInput.default>;
 
-const PhoneInput = ({ className, children, required, ...props }: PhoneInputProps) => (
+const PhoneInput = ({
+  className,
+  children,
+  required,
+  ...props
+}: PhoneInputProps) => (
   <RPNInput.default
     className={cn("flex", className)}
     placeholder={"Enter a phone number"}
@@ -63,7 +68,7 @@ PhoneInput.displayName = "PhoneInput";
 const InputComponent = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, required, ...props }, ref) => (
     <Input
-      className={cn("rounded-s-none rounded-e-lg", className)}
+      className={cn("rounded-s-none rounded-e-md", className)}
       {...props}
       required={required}
       ref={ref}
@@ -94,34 +99,39 @@ const CountrySelect = ({
   );
 
   return (
-    <Popover>
+    <Popover modal>
       <PopoverTrigger asChild>
         <Button
           type="button"
-          variant={"outline"}
-          className={cn("rounded-e-none rounded-s-lg pl-3 pr-1 flex gap-1")}
-          disabled={disabled}>
+          variant="outline"
+          className={cn("rounded-e-none rounded-s-md pl-2 pr-3 flex gap-1")}
+          disabled={disabled}
+        >
+          <CaretSortIcon className={`h-4 w-4 text-muted-foreground ${disabled ? "hidden" : ""}`} />
           <span className="flex items-center truncate">
             <div className="bg-foreground/20 rounded-sm flex w-6 h-4">
               {value && <FlagComponent country={value} countryName={value} />}
             </div>
           </span>
-          <CaretSortIcon className={`h-4 w-4 ${disabled ? "hidden" : ""}`} />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[300px] p-0">
+      <PopoverContent className="w-full p-0" align="start">
         <Command>
-          <CommandList>
-            <CommandInput placeholder="Search country..." />
-            <CommandEmpty>No country found.</CommandEmpty>
-            <CommandGroup>
+          <CommandInput placeholder="Search country..." />
+          <CommandEmpty>No country found.</CommandEmpty>
+          <ScrollArea
+            type="always"
+            className="h-56 w-72" 
+          >
+            <CommandGroup className="mr-1.5">
               {options
                 .filter((x) => x.value)
                 .map((option) => (
                   <CommandItem
                     className={"text-sm gap-2"}
                     key={option.value}
-                    onSelect={() => handleSelect(option.value)}>
+                    onSelect={() => handleSelect(option.value)}
+                  >
                     <FlagComponent
                       country={option.value}
                       countryName={option.label}
@@ -131,13 +141,14 @@ const CountrySelect = ({
                       {`+${RPNInput.getCountryCallingCode(option.value)}`}
                     </span>
                     <CheckIcon
-                      className={`ml-auto h-4 w-4 ${option.value === value ? "opacity-100" : "opacity-0"
-                        }`}
+                      className={`ml-auto h-4 w-4 ${
+                        option.value === value ? "opacity-100" : "opacity-0"
+                      }`}
                     />
                   </CommandItem>
                 ))}
             </CommandGroup>
-          </CommandList>
+          </ScrollArea>
         </Command>
       </PopoverContent>
     </Popover>
@@ -149,7 +160,8 @@ const FlagComponent = ({ country, countryName }: RPNInput.FlagProps) => {
 
   return (
     <span
-      className={"inline object-contain w-6 h-4 overflow-hidden rounded-sm"}>
+      className={"inline object-contain w-6 h-4 overflow-hidden rounded-sm"}
+    >
       {Flag && <Flag title={countryName} />}
     </span>
   );

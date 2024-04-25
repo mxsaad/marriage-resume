@@ -14,7 +14,7 @@ import {
   FormMessage,
   FormDescription,
 } from "@/components/ui/form";
-import locationsData from "@/data/locations.json";
+import countriesToStates from "@/data/country-states.json";
 import languagesData from "@/data/languages.json";
 import { updateUser } from "@/lib/actions/user.actions";
 import type { WithId, Document } from "mongodb";
@@ -54,7 +54,7 @@ export default function FamilyForm({ user }: { user: WithId<Document> }) {
             <FormItem>
               <FormLabel>Countries</FormLabel>
               <MultiSelect
-                options={locationsData.map((l: any) => l.countryName as string)}
+                options={countriesToStates.map((value) => value.country)}
                 value={field.value}
                 onChange={field.onChange}
                 capacity={5}

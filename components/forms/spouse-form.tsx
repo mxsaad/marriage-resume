@@ -20,6 +20,7 @@ import { cn } from "@/lib/utils";
 import { updateUser } from "@/lib/actions/user.actions";
 import type { WithId, Document } from "mongodb";
 import MultiSelect from "@/components/ui/multi-select";
+import { spouse as tags } from "@/data/form-data";
 
 // Form Schema
 const formSchema: z.Schema = z.object({
@@ -27,17 +28,6 @@ const formSchema: z.Schema = z.object({
   dealBreakers: z.array(z.string()),
   tags: z.array(z.string()),
 });
-
-const tags = [
-  "Romantic",
-  "Loyal",
-  "Funny",
-  "Alpha",
-  "Beta",
-  "Introvert",
-  "Extrovert",
-  "Adventurous",
-];
 
 export default function SpouseForm({ user }: { user: WithId<Document> }) {
   const form = useForm<z.infer<typeof formSchema>>({

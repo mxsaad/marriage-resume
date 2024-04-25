@@ -16,29 +16,14 @@ import {
 } from "@/components/ui/form";
 import { updateUser } from "@/lib/actions/user.actions";
 import type { WithId, Document } from "mongodb";
-import MultiSelect from "../ui/multi-select";
+import MultiSelect from "@/components/ui/multi-select";
+import { occupation as tags } from "@/data/form-data"
 
 // Form Schema
 const formSchema: z.Schema = z.object({
   tags: z.array(z.string()),
   description: z.string(),
 });
-
-const tags = [
-  "Student",
-  "Doctor",
-  "Engineer",
-  "Teacher",
-  "Entreprenuer",
-  "Millionaire",
-  "Billionaire",
-  "Tutor",
-  "Content Creator",
-  "Psychologist",
-  "Athlete",
-  "Soldier",
-  "Trader",
-];
 
 export default function OccupationForm({ user }: { user: WithId<Document> }) {
   const form = useForm<z.infer<typeof formSchema>>({
@@ -50,8 +35,7 @@ export default function OccupationForm({ user }: { user: WithId<Document> }) {
   });
 
   async function handleSubmit(values: z.infer<typeof formSchema>) {
-    // await updateUser(user.clerkId, { occupation: values });
-    console.log(values);
+    await updateUser(user.clerkId, { occupation: values });
   }
 
   return (

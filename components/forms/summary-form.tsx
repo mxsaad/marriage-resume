@@ -22,10 +22,11 @@ import {
   FormMessage,
   FormDescription,
 } from "@/components/ui/form";
-import locations from "@/data/locations.json";
+import countryToStates from "@/data/country-states.json";
 import { useEffect, useState } from "react";
 import { updateUser } from "@/lib/actions/user.actions";
 import type { WithId, Document } from "mongodb";
+import { atleast18 } from "@/lib/utils";
 
 // Form Schema
 const formSchema: z.Schema = z.object({
@@ -40,19 +41,8 @@ const formSchema: z.Schema = z.object({
   bio: z.string(),
 });
 
-// Ensure the user is at least 18 years old
-const today = new Date();
-const maxDate = new Date(
-  today.getFullYear() - 18,
-  today.getMonth(),
-  today.getDate(),
-)
-  .toISOString()
-  .split("T")[0];
-
 export default function SummaryForm({ user }: { user: WithId<Document> }) {
-  // States for the country
-  const [states, setStates] = useState([]);
+  const [states, setStates] = useState<string[]>([]); // List of states based on the selected country
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -70,14 +60,9 @@ export default function SummaryForm({ user }: { user: WithId<Document> }) {
   });
 
   useEffect(() => {
-    // Update states when country changes
-    const country = form.getValues("location.country");
-    if (country) {
-      const countryData: any = locations.find(
-        (value: any) => value.countryName === country,
-      );
-      setStates(countryData?.regions);
-    }
+    const country = form.watch("location.country");
+    const states = countryToStates.find((value) => value.country === country)?.states;
+    setStates(states as string[]);
   }, [form.watch("location.country")]);
 
   async function handleSubmit(values: z.infer<typeof formSchema>) {
@@ -120,7 +105,7 @@ export default function SummaryForm({ user }: { user: WithId<Document> }) {
               <FormItem>
                 <FormLabel>Date of Birth</FormLabel>
                 <FormControl>
-                  <Input type="date" max={maxDate} required {...field} />
+                  <Input type="date" max={atleast18()} required {...field} />
                 </FormControl>
                 <FormMessage />
                 <FormDescription>Used to calculate your age.</FormDescription>
@@ -198,9 +183,9 @@ export default function SummaryForm({ user }: { user: WithId<Document> }) {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {locations.map((value: any, index: number) => (
-                      <SelectItem key={index} value={value.countryName}>
-                        {value.countryName}
+                    {countryToStates.map((value, index) => (
+                      <SelectItem key={index} value={value.country}>
+                        {value.country}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -230,9 +215,9 @@ export default function SummaryForm({ user }: { user: WithId<Document> }) {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {states?.map((value: any, index: number) => (
-                      <SelectItem key={index} value={value.name}>
-                        {value.name}
+                    {states?.map((state, index) => (
+                      <SelectItem key={index} value={state}>
+                        {state}
                       </SelectItem>
                     ))}
                   </SelectContent>
