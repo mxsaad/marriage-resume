@@ -30,7 +30,7 @@ export default function MultiSelect({
   capacity,
 }: MultiSelectProps) {
   return (
-    <Popover modal>
+    <Popover>
       <PopoverTrigger asChild>
         <Button
           variant="outline"
@@ -38,8 +38,8 @@ export default function MultiSelect({
           className="w-full justify-start h-fit gap-2 font-normal hover:bg-background"
         >
           <CaretSortIcon className="h-4 w-4 shrink-0 opacity-50" />
-          <span className="flex flex-wrap-reverse gap-1">
-            {value
+          <span className="flex flex-wrap-reverse gap-1 text-muted-foreground">
+            {value.length
               ? value.map((tag, index) => (
                   <Badge
                     key={index}
@@ -54,19 +54,19 @@ export default function MultiSelect({
                     <Cross2Icon className="w-3 h-3" />
                   </Badge>
                 ))
-              : "Please select..."}
+              : "Please select"}
           </span>
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-fit p-0">
+      <PopoverContent className="w-full p-0" align="start">
         <Command>
-          <CommandInput placeholder="Search tags..." className="h-9" />
-          <CommandEmpty>No tags found.</CommandEmpty>
+          <CommandInput placeholder="Search..." className="h-9" />
+          <CommandEmpty>No results found.</CommandEmpty>
           <ScrollArea
             type="always"
-            className={"[&>[data-radix-scroll-area-viewport]]:max-h-56"}
+            className="[&>[data-radix-scroll-area-viewport]]:max-h-56 w-[--radix-popover-trigger-width]"
           >
-            <CommandGroup className="mr-2">
+            <CommandGroup className="mr-1.5">
               {options.map((option, index) => (
                 <CommandItem
                   key={index}
