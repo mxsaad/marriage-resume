@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Badge } from "../ui/badge";
 import {
   Form,
   FormControl,
@@ -15,26 +14,13 @@ import {
   FormMessage,
   FormDescription,
 } from "@/components/ui/form";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-} from "@/components/ui/command";
-import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
-import { cn } from "@/lib/utils";
 import { updateUser } from "@/lib/actions/user.actions";
 import type { WithId, Document } from "mongodb";
+import MultiSelect from "../ui/multi-select";
 
 // Form Schema
 const formSchema: z.Schema = z.object({
-  tags: z.set(z.string()),
+  tags: z.array(z.string()),
   description: z.string(),
 });
 
@@ -46,20 +32,26 @@ const tags = [
   "Entreprenuer",
   "Millionaire",
   "Billionaire",
+  "Tutor",
+  "Content Creator",
+  "Psychologist",
+  "Athlete",
+  "Soldier",
+  "Trader",
 ];
 
 export default function OccupationForm({ user }: { user: WithId<Document> }) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      tags: new Set(user.occupation.tags as string[]),
+      tags: user.occupation.tags as string[],
       description: user.occupation.description as string,
     },
   });
 
   async function handleSubmit(values: z.infer<typeof formSchema>) {
-    values.tags = Array.from(values.tags);
-    await updateUser(user.clerkId, { occupation: values });
+    // await updateUser(user.clerkId, { occupation: values });
+    console.log(values);
   }
 
   return (
@@ -74,60 +66,12 @@ export default function OccupationForm({ user }: { user: WithId<Document> }) {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Tags</FormLabel>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <FormControl>
-                    <Button
-                      variant="outline"
-                      role="combobox"
-                      className="w-full justify-start h-fit gap-2 font-normal"
-                    >
-                      <CaretSortIcon className="h-4 w-4 shrink-0 opacity-50" />
-                      <span className="flex flex-wrap-reverse gap-2">
-                        {field.value.size
-                          ? Array.from(field.value).map((tag, index) => (
-                              <Badge key={index}>{tag as string}</Badge>
-                            ))
-                          : "Please select"}
-                      </span>
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent className="w-fit p-0">
-                  <Command>
-                    <CommandInput
-                      placeholder="Search tags..."
-                      className="h-9"
-                    />
-                    <CommandEmpty>No tags found.</CommandEmpty>
-                    <CommandGroup>
-                      {tags.map((tag: string, index: number) => (
-                        <CommandItem
-                          key={index}
-                          value={tag}
-                          onSelect={() => {
-                            if (field.value.has(tag)) {
-                              field.value.delete(tag);
-                              form.setValue("tags", field.value);
-                            } else if (field.value.size < 3)
-                              form.setValue("tags", field.value.add(tag));
-                          }}
-                        >
-                          {tag}
-                          <CheckIcon
-                            className={cn(
-                              "ml-auto h-4 w-4",
-                              field.value.has(tag)
-                                ? "opacity-100"
-                                : "opacity-0",
-                            )}
-                          />
-                        </CommandItem>
-                      ))}
-                    </CommandGroup>
-                  </Command>
-                </PopoverContent>
-              </Popover>
+              <MultiSelect
+                options={tags}
+                capacity={3}
+                onChange={field.onChange}
+                value={field.value}
+              />
               <FormMessage />
               <FormDescription>Select up to 3 tags.</FormDescription>
             </FormItem>
