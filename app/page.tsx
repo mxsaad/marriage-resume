@@ -1,73 +1,25 @@
-import { Badge } from "@/components/ui/badge"
-import { CounterClockwiseClockIcon, LightningBoltIcon, LockClosedIcon } from "@radix-ui/react-icons"
-import FeatureCard from "@/components/shared/feature-card"
-import ClaimUsername from "@/components/shared/claim-username"
-import PhoneMockup from "@/components/shared/phone-mockup"
-import HomeHeader from "@/components/shared/home-header"
-import Footer from "@/components/shared/footer"
+import { Main } from "@/components/craft";
+import HomeHeader from "@/components/shared/home-header";
+import Footer from "@/components/shared/footer";
+import Hero from "@/components/shared/hero";
+import Stats from "@/components/shared/stats";
+import Features from "@/components/shared/features";
+import Pricing from "@/components/shared/pricing";
+import FAQs from "@/components/shared/faqs";
+import CTA from "@/components/shared/cta";
 
 export default function Component() {
   return (
-    <main className="min-h-screen w-full flex flex-col gap-12">
-      <HomeHeader /> 
-      
-      <section className="md:px-14 flex flex-col lg:flex-row gap-12 items-center justify-center">
-        {/* Typography & CTA */}
-        <div className="max-w-sm sm:max-w-md md:max-w-2xl lg:max-w-3xl">
-          <Badge variant="secondary" className="pl-0.5 flex gap-2 w-fit">
-            <Badge>NEW</Badge> Public beta has begun! 🎉
-          </Badge>
-          <p className="mt-4 text-lg sm:text-xl md:text-2xl tracking-tight leading-tight text-muted-foreground">
-            Say <i>Salam</i> to the modern way for Muslims to share their profiles with marriage aunties.
-          </p>
-          <h1 className="mt-4 font-bold tracking-tighter text-4xl sm:text-5xl lg:text-6xl/none">
-            Create your beautiful profile to <span className="text-primary">stand out</span> now!
-          </h1>
-          <ClaimUsername />
-        </div>
-        <PhoneMockup />
-      </section>
-
-      {/* Features */}
-      <section className="md:px-14 bg-transparent py-12 md:py-24 flex flex-col items-center justify-center">
-        <div className="max-w-xs sm:max-w-sm md:max-w-max mb-8 flex flex-col items-center justify-center text-center gap-2 md:gap-4">
-          <h1 className="font-bold tracking-tighter text-4xl sm:text-5xl lg:text-6xl/none">
-            Discover Our Unique Features
-          </h1>
-          <p className="leading-7 text-muted-foreground">
-            Designed from the ground up to be the easiest way for you to share your profile.
-          </p>
-        </div>
-        <div className="flex flex-col md:flex-row gap-8">
-          <FeatureCard
-            icon={<CounterClockwiseClockIcon className="w-6 h-6 text-foreground" />}
-            title="Rapid Setup"
-            description="Create a beautiful profile in minutes, so you can focus on what matters."
-          />
-          <FeatureCard
-            icon={<LockClosedIcon className="w-6 h-6 text-foreground" />}
-            title="Private & Secure"
-            description="We take privacy and security very seriously. Your data is safe with us."
-          />
-          <FeatureCard
-            icon={<LightningBoltIcon className="w-6 h-6 text-foreground" />}
-            title="AI-Powered Suggestions"
-            description="Our profile suggestions help you create a profile that stands out."
-          />
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="md:px-14 flex flex-col lg:flex-row gap-12 items-center justify-center">
-        <div className="max-w-sm sm:max-w-md md:max-w-2xl lg:max-w-3xl">
-          <h1 className="font-bold tracking-tighter text-4xl sm:text-5xl lg:text-6xl/none">
-            Get started today. <br /> Get married tomorrow.
-          </h1>
-          <ClaimUsername />
-        </div>
-      </section>
-
+    <Main className="min-h-screen w-full flex flex-col gap-6">
+      <HomeHeader />
+      <Hero />
+      <Stats />
+      {/* TODO: Add testimonials */}
+      <Features />
+      <Pricing />
+      <FAQs />
+      <CTA />
       <Footer />
-    </main>
-  )
+    </Main>
+  );
 }

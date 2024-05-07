@@ -5,7 +5,7 @@ import { SignUpButton } from "@clerk/nextjs";
 
 export default function ClaimUsername() {
   return (
-    <div className="mt-6 md:mt-10 flex flex-col md:flex-row items-center gap-2">
+    <div className="flex flex-col md:flex-row items-center gap-2">
       <div className="flex items-center">
         <p className="px-2 h-9 font-mono text-base sm:text-lg flex items-center bg-secondary rounded-l-md font-medium text-foreground">
           marriageresu.me/@

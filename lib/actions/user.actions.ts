@@ -47,3 +47,11 @@ export async function deleteUser(clerkId: string) {
     console.error("Error deleting user:", error);
   }
 }
+
+export async function getUsers() {
+  try {
+    return await users.find().toArray();
+  } catch (error) {
+    console.error("Error getting users:", error);
+  }
+}
