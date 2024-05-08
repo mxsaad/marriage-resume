@@ -5,6 +5,26 @@ import EditProfile from "@/components/shared/edit-profile";
 import { auth } from "@clerk/nextjs";
 import { notFound } from "next/navigation";
 import { getUser } from "@/lib/actions/user.actions";
+import { Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { username: string };
+}): Promise<Metadata> {
+  const username = params.username.replace("%40", "").toLowerCase(); // Remove %40 (@) and convert to lowercase
+  const user = await getUser({ username });
+
+  return user
+    ? {
+        title: `${user.name} (@${user.username}) - MarriageResume`,
+        description: user.bio,
+      }
+    : {
+        title: "User not found - MarriageResume",
+        description: "The user you're looking for does not exist.",
+      };
+}
 
 export default async function Profile({
   params,
@@ -12,7 +32,7 @@ export default async function Profile({
   params: { username: string };
 }) {
   const username = params.username.replace("%40", "").toLowerCase(); // Remove %40 (@) and convert to lowercase
-  const user = await getUser({ username });
+  const user = JSON.parse(JSON.stringify(await getUser({ username })));
   if (!user) notFound();
 
   return (
@@ -26,7 +46,10 @@ export default async function Profile({
                 <TabsTrigger value="view" className="flex gap-2 items-center">
                   <EyeOpenIcon /> View
                 </TabsTrigger>
-                <TabsTrigger value="edit" className="flex gap-2 items-center justify-center">
+                <TabsTrigger
+                  value="edit"
+                  className="flex gap-2 items-center justify-center"
+                >
                   <Pencil2Icon /> Edit
                 </TabsTrigger>
               </TabsList>
@@ -36,7 +59,7 @@ export default async function Profile({
             <ViewProfile user={user} />
           </TabsContent>
           <TabsContent value="edit">
-            <EditProfile user={user}/>
+            <EditProfile user={user} />
           </TabsContent>
         </Tabs>
       </div>
