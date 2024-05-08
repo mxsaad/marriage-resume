@@ -10,23 +10,38 @@ import { getUsers } from "@/lib/actions/user.actions";
 
 export default async function Stats() {
   const users = await getUsers();
-  const totalUsers = users ? users.length : 0;
-  const totalSisters = users
-    ? users.filter((user) => user.gender === "Sister").length
-    : 0;
-  const NAUsers = users
-    ? users.filter(
-        (user) =>
-          user.location.country === "United States" ||
-          user.location.country === "Canada",
-      ).length
-    : 0;
-  const youngUsers = users
-    ? users.filter((user) => {
-        const age = new Date().getFullYear() - new Date(user.dob).getFullYear();
-        return age >= 18 && age <= 25;
-      }).length
-    : 0;
+  const stats = [
+    {
+      title: "Total Users",
+      value: users ? users.length : 0,
+    },
+    {
+      title: "Total Sisters",
+      value: users
+        ? users.filter((user) => user.gender === "Sister").length
+        : 0,
+    },
+    {
+      title: "US & Canada",
+      value: users
+        ? users.filter(
+            (user) =>
+              user.location.country === "United States" ||
+              user.location.country === "Canada",
+          ).length
+        : 0,
+    },
+    {
+      title: "Aged 18-25",
+      value: users
+        ? users.filter((user) => {
+            const age =
+              new Date().getFullYear() - new Date(user.dob).getFullYear();
+            return age >= 18 && age <= 25;
+          }).length
+        : 0,
+    },
+  ];
 
   return (
     <Section>
@@ -45,38 +60,19 @@ export default async function Stats() {
           </div>
           <div className="flex justify-center items-center">
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-2 gap-4 text-left w-full">
-              <Card className="min-w-fit shadow-lg shadow-secondary">
-                <CardHeader className="font-normal text-sm">
-                  <CardDescription>Total Users</CardDescription>
-                  <CardTitle className="font-bold text-3xl">
-                    {totalUsers}
-                  </CardTitle>
-                </CardHeader>
-              </Card>
-              <Card className="min-w-fit shadow-lg shadow-secondary">
-                <CardHeader className="font-normal text-sm">
-                  <CardDescription>Total Sisters</CardDescription>
-                  <CardTitle className="font-bold text-3xl">
-                    {totalSisters}
-                  </CardTitle>
-                </CardHeader>
-              </Card>
-              <Card className="min-w-fit shadow-lg shadow-secondary">
-                <CardHeader className="font-normal text-sm">
-                  <CardDescription>US & Canada</CardDescription>
-                  <CardTitle className="font-bold text-3xl">
-                    {NAUsers}
-                  </CardTitle>
-                </CardHeader>
-              </Card>
-              <Card className="min-w-fit shadow-lg shadow-secondary">
-                <CardHeader className="font-normal text-sm">
-                  <CardDescription>Aged 18-25</CardDescription>
-                  <CardTitle className="font-bold text-3xl">
-                    {youngUsers}
-                  </CardTitle>
-                </CardHeader>
-              </Card>
+              {stats.map((stat, index) => (
+                <Card
+                  key={index}
+                  className="min-w-fit shadow-lg shadow-secondary"
+                >
+                  <CardHeader className="font-normal text-sm">
+                    <CardDescription>{stat.title}</CardDescription>
+                    <CardTitle className="font-bold text-3xl">
+                      {stat.value}
+                    </CardTitle>
+                  </CardHeader>
+                </Card>
+              ))}
             </div>
           </div>
         </div>

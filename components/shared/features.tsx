@@ -28,48 +28,45 @@ export default function Features() {
             </Balancer>
           </h4>
           <div className="mt-6 grid gap-6 md:mt-12 md:grid-cols-4">
-            <Card className="shadow-lg shadow-secondary">
-              <CardHeader className="space-y-3">
-                <CheckCircledIcon className="w-6 h-6 text-foreground" />
-                <CardTitle>100% Halal</CardTitle>
-                <CardDescription>
-                  No pictures, no free mixing, no haram. Matchmaking done right.
-                </CardDescription>
-              </CardHeader>
-            </Card>
-            <Card className="shadow-lg shadow-secondary">
-              <CardHeader className="space-y-3">
-                <LightningBoltIcon className="w-6 h-6 text-foreground" />
-                <CardTitle>Rapid Setup</CardTitle>
-                <CardDescription>
-                  Create a beautiful profile in minutes, so you can focus on
-                  what matters.
-                </CardDescription>
-              </CardHeader>
-            </Card>
-            <Card className="shadow-lg shadow-secondary">
-              <CardHeader className="space-y-3">
-                <LockClosedIcon className="w-6 h-6 text-foreground" />
-                <CardTitle>Private & Secure</CardTitle>
-                <CardDescription>
-                  Your data is safe with us. We take privacy and security very
-                  seriously.
-                </CardDescription>
-              </CardHeader>
-            </Card>
-            <Card className="shadow-lg shadow-secondary">
-              <CardHeader className="space-y-3">
-                <HeartIcon className="w-6 h-6 text-foreground" />
-                <CardTitle>Great Filters</CardTitle>
-                <CardDescription>
-                  Use our extensive list of filters to find your perfect match
-                  easily.
-                </CardDescription>
-              </CardHeader>
-            </Card>
+            {feaures.map((feature, index) => (
+              <Card key={index} className="shadow-lg shadow-secondary">
+                <CardHeader className="space-y-3">
+                  {feature.icon}
+                  <CardTitle>{feature.title}</CardTitle>
+                  <CardDescription>{feature.description}</CardDescription>
+                </CardHeader>
+              </Card>
+            ))}
           </div>
         </div>
       </Container>
     </Section>
   );
 }
+
+const feaures = [
+  {
+    icon: <CheckCircledIcon className="w-6 h-6 text-foreground" />,
+    title: "100% Halal",
+    description:
+      "No pictures, no free mixing, no haram. Matchmaking done right.",
+  },
+  {
+    icon: <LightningBoltIcon className="w-6 h-6 text-foreground" />,
+    title: "Rapid Setup",
+    description:
+      "Create a beautiful profile in minutes, so you can focus on what matters.",
+  },
+  {
+    icon: <LockClosedIcon className="w-6 h-6 text-foreground" />,
+    title: "Private & Secure",
+    description:
+      "Your data is safe with us. We take privacy and security very seriously.",
+  },
+  {
+    icon: <HeartIcon className="w-6 h-6 text-foreground" />,
+    title: "Great Filters",
+    description:
+      "Use our extensive list of filters to find your perfect match easily.",
+  },
+];
