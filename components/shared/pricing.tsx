@@ -31,7 +31,7 @@ export default function Pricing() {
             </h4>
           </div>
           <div className="columns-1 md:columns-2 justify-center items-center text-left w-full gap-8 space-y-6">
-            <Card className="rounded-md">
+            <Card className="rounded-md shadow-lg shadow-secondary">
               <CardHeader>
                 <CardTitle>
                   <span className="flex flex-row gap-4 items-center font-normal">
